@@ -273,8 +273,8 @@
     toJalaali: toJalaali
     toGregorian: toGregorian
 
-  div = (a, b) -> parseInt a / b, 10
-  mod = (a, b) -> a - parseInt(a / b, 10) * b
+  div = (a, b) -> ~~(a / b)
+  mod = (a, b) -> a - ~~(a / b) * b
 
   # @see: http://www.astro.uni.torun.pl/~kb/Papers/EMP/PersianC-EMP.htm
 
