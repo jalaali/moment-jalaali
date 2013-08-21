@@ -5,6 +5,7 @@
   "main": "moment-jalaali.js",
   "scripts": {
     "test": "node_modules/.bin/mocha -R spec -u bdd --check-leaks --compilers coffee:coffee-script src/test.coffee",
+    "test-watch": "node_modules/.bin/mocha -R spec -u bdd -w --check-leaks --compilers coffee:coffee-script src/test.coffee",
     "prepublish": "node_modules/.bin/coffee -o ./ -c src/moment-jalaali.coffee"
   },
   "repository": {

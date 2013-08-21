@@ -6,17 +6,10 @@
   else if typeof exports is 'object'
     module.exports = factory require 'moment'
   else
-    factory root.moment
+    root.moment = factory root.moment
 ) this, (moment) ->
 
   throw new Error 'Cannot find moment' unless moment?
-
-  ###
-      Overrides
-  ###
-
-  _format = moment.fn.format
-  _startOf = moment.fn.startOf
 
   ###
       Constants
@@ -158,16 +151,28 @@
 
     daysToDayOfWeek += 7 if daysToDayOfWeek < end - 7
 
-    adjustedMoment = moment(mom).add 'd', daysToDayOfWeek
+    adjustedMoment = jMoment(mom).add 'd', daysToDayOfWeek
 
     week: Math.ceil adjustedMoment.jDayOfYear() / 7
     year: adjustedMoment.jYear()
 
   ###
+      Parsing
+  ###
+
+  jMoment = ->
+    m = moment.apply this, arguments
+    m.__proto__ = jMoment.fn
+    m
+  jMoment[key] = value for own key, value of moment
+  jMoment.fn = {}
+  jMoment.fn.__proto__ = moment.fn
+
+  ###
       Methods
   ###
 
-  moment.fn.format = (format) ->
+  jMoment.fn.format = (format) ->
     if format
       i = 5
       replace = (input) => @lang().longDateFormat(input) or input
@@ -177,59 +182,59 @@
       unless formatFunctions[format]
         formatFunctions[format] = makeFormatFunction format
       format = formatFunctions[format] this
-    _format.call this, format
+    moment.fn.format.call this, format
 
-  moment.fn.jYear = (input) ->
+  jMoment.fn.jYear = (input) ->
     if typeof input is 'number'
       {jy, jm, jd} = toJalaali @year(), @month(), @date()
-      lastDay = Math.min jd, moment.jDaysInMonth input, jm
+      lastDay = Math.min jd, jMoment.jDaysInMonth input, jm
       {gy, gm, gd} = toGregorian input, jm, lastDay
       setDate.call this, gy, gm, gd
-      moment.updateOffset this
+      jMoment.updateOffset this
       this
     else
       toJalaali(@year(), @month(), @date()).jy
-  moment.fn.jYears = moment.fn.jYear
+  jMoment.fn.jYears = jMoment.fn.jYear
 
-  moment.fn.jMonth = (input) ->
+  jMoment.fn.jMonth = (input) ->
     if typeof input is 'number'
       {jy, jm, jd} = toJalaali @year(), @month(), @date()
-      lastDay = Math.min jd, moment.jDaysInMonth jy, input
+      lastDay = Math.min jd, jMoment.jDaysInMonth jy, input
       {gy, gm, gd} = toGregorian jy, input, lastDay
       setDate.call this, gy, gm, gd
-      moment.updateOffset this
+      jMoment.updateOffset this
       this
     else
       toJalaali(@year(), @month(), @date()).jm
-  moment.fn.jMonths = moment.fn.jMonth
+  jMoment.fn.jMonths = jMoment.fn.jMonth
 
-  moment.fn.jDate = (input) ->
+  jMoment.fn.jDate = (input) ->
     if typeof input is 'number'
       {jy, jm, jd} = toJalaali @year(), @month(), @date()
       {gy, gm, gd} = toGregorian jy, jm, input
       setDate.call this, gy, gm, gd
-      moment.updateOffset this
+      jMoment.updateOffset this
       this
     else
       toJalaali(@year(), @month(), @date()).jd
-  moment.fn.jDates = moment.fn.jDate
+  jMoment.fn.jDates = jMoment.fn.jDate
 
-  moment.fn.jDayOfYear = (input) ->
+  jMoment.fn.jDayOfYear = (input) ->
     dayOfYear = Math.round(
-      (moment(this).startOf('day') - moment(this).startOf('jYear')) / 864e5
+      (jMoment(this).startOf('day') - jMoment(this).startOf('jYear')) / 864e5
     ) + 1
     unless input? then dayOfYear else @add 'd', input - dayOfYear
 
-  moment.fn.jWeek = (input) ->
+  jMoment.fn.jWeek = (input) ->
     week = jWeekOfYear(this, @lang()._week.dow, @lang()._week.doy).week
     unless input? then week else @add 'd', (input - week) * 7
-  moment.fn.jWeeks = moment.fn.jWeek
+  jMoment.fn.jWeeks = jMoment.fn.jWeek
 
-  moment.fn.jWeekYear = (input) ->
+  jMoment.fn.jWeekYear = (input) ->
     year = jWeekOfYear(this, @lang()._week.dow, @lang()._week.doy).year
     unless input? then year else @add 'y', input - year
 
-  moment.fn.startOf = (units) ->
+  jMoment.fn.startOf = (units) ->
     units = normalizeUnits units
     if units in ['jyear', 'jmonth']
       if units is 'jyear'
@@ -241,19 +246,19 @@
       @milliseconds 0
       this
     else
-      _startOf.call this, units
+      moment.fn.startOf.call this, units
 
   ###
       Statics
   ###
 
-  moment.jDaysInMonth = (year, month) ->
+  jMoment.jDaysInMonth = (year, month) ->
     if month < 6 then 31
     else if month < 11 then 30
-    else if moment.jIsLeapYear year then 30
+    else if jMoment.jIsLeapYear year then 30
     else 29
 
-  moment.jIsLeapYear = (year) -> jalCal(year).leap is 0
+  jMoment.jIsLeapYear = (year) -> jalCal(year).leap is 0
 
   ###
       Conversion
@@ -269,7 +274,7 @@
     g.gm -= 1
     g
 
-  moment.jConvert =
+  jMoment.jConvert =
     toJalaali: toJalaali
     toGregorian: toGregorian
 
@@ -412,4 +417,4 @@
     gm: gm
     gd: gd
 
-  return
+  jMoment
