@@ -18,6 +18,65 @@ moment.lang 'en',
 
 describe 'moment', ->
 
+  describe '#parse', ->
+
+    it 'should parse gregorian dates', ->
+      m = moment '1981/8/17 07:10:20', 'YYYY/M/D hh:mm:ss'
+      m.format('YYYY-MM-DD hh:mm:ss').should.be.equal '1981-08-17 07:10:20'
+      m.milliseconds().should.be.equal 0
+
+    it 'should parse correctly when input is only time', ->
+      m = moment '07:10:20', 'hh:mm:ss'
+      m.format('YYYY-MM-DD hh:mm:ss').should.be.equal '0000-01-01 07:10:20'
+
+    it 'should parse when only Jalaali year is in the format', ->
+      m = moment '08 1360 17', 'MM jYYYY DD'
+      m.format('YYYY-MM-DD').should.be.equal '1981-08-17'
+
+    it 'should parse when only Jalaali month is in the format', ->
+      m = moment '1981 5 17', 'YYYY jM D'
+      m.format('YYYY-MM-DD').should.be.equal '1981-07-17'
+
+    it 'should parse when only Jalaali month string is in the format', ->
+      m = moment '1981 Amo 17', 'YYYY jMMM D'
+      m.format('YYYY-MM-DD').should.be.equal '1981-07-17'
+      m = moment '1981 Amordaad 17', 'YYYY jMMMM D'
+      m.format('YYYY-MM-DD').should.be.equal '1981-07-17'
+
+    it 'should parse when only Jalaali date is in the format', ->
+      m = moment '1981 26 8', 'YYYY jD M'
+      m.format('YYYY-MM-DD').should.be.equal '1981-08-15'
+
+    it 'should parse when Jalaali year and month are in the format', ->
+      m = moment '17 1360 5', 'D jYYYY jM'
+      m.format('YYYY-MM-DD').should.be.equal '1981-07-17'
+
+    it 'should parse when Jalaali year and date are in the format', ->
+      m = moment '26 1360 8', 'jD jYYYY M'
+      m.format('YYYY-MM-DD').should.be.equal '1981-08-15'
+
+    it 'should parse when Jalaali month and date are in the format', ->
+      m = moment '26 1981 5', 'jD YYYY jM'
+      m.format('YYYY-MM-DD').should.be.equal '1981-08-17'
+
+    it 'should parse when Jalaali year, month and date are in the format', ->
+      m = moment '26 1360 5', 'jD jYYYY jM'
+      m.format('YYYY-MM-DD').should.be.equal '1981-08-17'
+
+    it 'should parse with complex format', ->
+      m = moment '17 26 50 1981 50 8 50', 'D jD jYYYY YYYY M M jM'
+      m.format('YYYY-MM-DD').should.be.equal '1981-08-17'
+
+    it 'should parse format result', ->
+      format = 'jYYYY/jM/jD hh:mm:ss.SSS a'
+      m = moment()
+      moment(m.format(format), format).isSame(m).should.be.true
+
+    it 'should be able to parse in utc', ->
+      m = moment.utc '1360/5/26 07:10:20', 'jYYYY/jM/jD hh:mm:ss'
+      m.format('YYYY-MM-DD hh:mm:ss Z')
+          .should.be.equal '1981-08-17 07:10:20 +00:00'
+
   describe '#format', ->
 
     it 'should work normally when there is no Jalaali token', ->
@@ -27,6 +86,11 @@ describe 'moment', ->
     it 'should format to Jalaali with Jalaali tokens', ->
       m = moment '1981-08-17 07:10:20'
       m.format('jYYYY-jMM-jDD hh:mm:ss').should.be.equal '1360-05-26 07:10:20'
+
+    it 'should format with escaped and unescaped tokens', ->
+      m = moment '1981-08-17'
+      m.format('[My] birt\\h y[ea]r [is] jYYYY or YYYY')
+          .should.be.equal 'My birth year is 1360 or 1981'
 
     it 'should format with mixed tokens', ->
       m = moment '1981-08-17'
@@ -51,7 +115,7 @@ describe 'moment', ->
 
     it 'should format with jMMMM', ->
       m = moment '1981-08-17'
-      m.format('jMMMM').should.be.equal 'Amordad'
+      m.format('jMMMM').should.be.equal 'Amordaad'
 
     it 'should format with jDo', ->
       m = moment '1981-08-17'
@@ -124,11 +188,11 @@ describe 'moment', ->
       m.format('LT').should.be.equal '12:00 AM'
       m.format('L').should.be.equal '1360/05/26'
       m.format('l').should.be.equal '1360/5/26'
-      m.format('LL').should.be.equal '26 Amordad 1360'
+      m.format('LL').should.be.equal '26 Amordaad 1360'
       m.format('ll').should.be.equal '26 Amo 1360'
-      m.format('LLL').should.be.equal '26 Amordad 1360 12:00 AM'
+      m.format('LLL').should.be.equal '26 Amordaad 1360 12:00 AM'
       m.format('lll').should.be.equal '26 Amo 1360 12:00 AM'
-      m.format('LLLL').should.be.equal 'Monday, 26 Amordad 1360 12:00 AM'
+      m.format('LLLL').should.be.equal 'Monday, 26 Amordaad 1360 12:00 AM'
       m.format('llll').should.be.equal 'Mon, 26 Amo 1360 12:00 AM'
 
   describe '#jYear', ->
@@ -415,6 +479,21 @@ describe 'moment', ->
       m.startOf('jYear').format('jYYYY-jMM-jDD HH:mm:ss')
           .should.be.equal '1360-01-01 00:00:00'
 
+  describe '#isValid', ->
+
+    it 'should return true when a valid date is parsed and false otherwise', ->
+      moment('1981-08-17', 'YYYY-MM-DD').isValid().should.be.true
+      moment('1981-08-31', 'YYYY-MM-DD').isValid().should.be.true
+      moment('1981-09-31', 'YYYY-MM-DD').isValid().should.be.false
+      moment('1360 mordaad 26', 'jYYYY jMMMM jD').isValid().should.be.false
+      moment('1360-05-26', 'jYYYY-jMM-jDD').isValid().should.be.true
+      moment('1360-05-31', 'jYYYY-jMM-jDD').isValid().should.be.true
+      moment('1360-07-30', 'jYYYY-jMM-jDD').isValid().should.be.true
+      moment('1360-07-31', 'jYYYY-jMM-jDD').isValid().should.be.false
+      moment('1360-12-29', 'jYYYY-jMM-jDD').isValid().should.be.true
+      moment('1360-12-30', 'jYYYY-jMM-jDD').isValid().should.be.false
+      moment('1360-12-31', 'jYYYY-jMM-jDD').isValid().should.be.false
+
   describe '#jIsLeapYear', ->
 
     it 'should return true for Jalaali leap years and false otherwise', ->
@@ -432,12 +511,3 @@ describe 'moment', ->
       moment.jIsLeapYear(1402).should.be.false
       moment.jIsLeapYear(1403).should.be.true
       moment.jIsLeapYear(1404).should.be.false
-
-  describe 'constructing with string + format', ->
-
-    it.skip 'should work normally when there is no Jalaali token', ->
-      m = moment '12-25-1995', 'MM-DD-YYYY'
-      m.format('YYYY-MM-DD').should.be.equal '1995-12-25'
-
-    it.skip 'should parse Jalaali when there are Jalaali tokens', ->
-      m = moment '1392/5/26', 'jYYYY-jMM-jDD'

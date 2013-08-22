@@ -1,5 +1,6 @@
 'use strict'
 
+# Expose Moment Jalaali
 ((root, factory) ->
   if typeof define is 'function' and define.amd
     define ['moment'], factory
@@ -16,8 +17,43 @@
   ###
 
   formattingTokens =
-    /j(Mo|MM?M?M?|Do|DDDo|DD?D?D?|w[o|w]?|YYYYY|YYYY|YY|gg(ggg?)?)|[^j]+/g
-  localFormattingTokens = /(\[[^\[]*\])|(\\)?(LT|LL?L?L?|l{1,4})/g
+    ///
+      (\[[^\[]*\]) | # anything between []
+      (\\)? # escape formatting by an adding a \
+      j( # tokens should start with j
+        Mo | # month
+        MM?M?M? | # month
+        Do | # day of month
+        DDDo | # day of year
+        DD?D?D? | # day of month or year
+        w[o|w]? | # week of year
+        YYYYY | # year
+        YYYY | # year
+        YY | # year
+        gg(ggg?)? | # week year
+      ) |
+      . # any other character
+    ///g
+  localFormattingTokens =
+    ///
+      (\[[^\[]*\]) | # anything between []
+      (\\)? # escape formatting by adding a \
+      (LT|LL?L?L?|l{1,4}) # local format tokens
+    ///g
+
+  parseTokenOneOrTwoDigits = /\d\d?/ # 0 - 99
+  parseTokenOneToThreeDigits = /\d{1,3}/ # 0 - 999
+  parseTokenThreeDigits = /\d{3}/ # 000 - 999
+  parseTokenFourDigits = /\d{1,4}/ # 0 - 9999
+  parseTokenSixDigits = /[+\-]?\d{1,6}/ # -999,999 - 999,999
+  parseTokenWord =
+    # any word (or two) characters or numbers including
+    # two/three word month in arabic.
+    ///
+      [0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+ |
+      [\u0600-\u06FF/]+(\s*?[\u0600-\u06FF]+){1,2}
+    ///i
+
 
   unitAliases =
     jm: 'jmonth'
@@ -49,14 +85,15 @@
   ordinalizeToken = (func, period) ->
     (a) -> @lang().ordinal func.call(this, a), period
 
-  while ordinalizeTokens.length
-    i = ordinalizeTokens.pop()
-    formatTokenFunctions['j' + i + 'o'] =
-      ordinalizeToken formatTokenFunctions['j' + i], i
+  do ->
+    while ordinalizeTokens.length
+      i = ordinalizeTokens.pop()
+      formatTokenFunctions['j' + i + 'o'] =
+        ordinalizeToken formatTokenFunctions['j' + i], i
 
-  while paddedTokens.length
-    i = paddedTokens.pop()
-    formatTokenFunctions['j' + i + i] = padToken formatTokenFunctions['j' + i], 2
+    while paddedTokens.length
+      i = paddedTokens.pop()
+      formatTokenFunctions['j' + i + i] = padToken formatTokenFunctions['j' + i], 2
 
   formatTokenFunctions.jDDDD = padToken formatTokenFunctions.jDDD, 3
 
@@ -81,6 +118,10 @@
     @_d['set' + utc + 'Month'](month)
     @_d['set' + utc + 'Date'](date)
 
+  extend = (a, b) -> a[key] = value for own key, value of b
+
+  isArray = (o) -> Object.prototype.toString.call(o) is '[object Array]'
+
   ###
       Languages
   ###
@@ -89,13 +130,13 @@
     _jMonths: [
       'Farvardin'
       'Ordibehesht'
-      'Khordad'
+      'Khordaad'
       'Tir'
-      'Amordad'
+      'Amordaad'
       'Shahrivar'
       'Mehr'
-      'Aban'
-      'Azar'
+      'Aabaan'
+      'Aazar'
       'Dey'
       'Bahman'
       'Esfand'
@@ -110,16 +151,27 @@
       'Amo'
       'Sha'
       'Meh'
-      'Aba'
-      'Aza'
+      'Aab'
+      'Aaz'
       'Dey'
       'Bah'
       'Esf'
     ]
     jMonthsShort: (m) -> @_jMonthsShort[m.jMonth()]
 
-  langProto = moment.langData().__proto__
-  langProto[key] = value for own key, value of lang
+    jMonthsParse: (monthName) ->
+      @_jMonthsParse = [] unless @_jMonthsParse
+      for i in [0...12]
+        # make the regex if we don't have it already
+        unless @_jMonthsParse[i]
+          mom = jMoment [2000, (2 + i) % 12, 25]
+          regex = '^' + @jMonths(mom, '') + '|^' + @jMonthsShort(mom, '')
+          @_jMonthsParse[i] = new RegExp regex.replace('.', ''), 'i'
+        # test the regex
+        if @_jMonthsParse[i].test monthName
+          return i
+
+  extend moment.langData().__proto__, lang
 
   ###
       Formatting
@@ -160,13 +212,105 @@
       Parsing
   ###
 
-  jMoment = ->
-    m = moment.apply this, arguments
+  escapeParseTokens = (format) ->
+    array = format.match formattingTokens
+    for match, i in array when formatTokenFunctions[match]
+      array[i] = '[' + match + ']'
+    array.join ''
+
+  # get the regex to find the next token
+  getParseRegexForToken = (token, config) ->
+    switch token
+      when 'jDDDD' then parseTokenThreeDigits
+      when 'jYYYY' then parseTokenFourDigits
+      when 'jYYYYY' then parseTokenSixDigits
+      when 'jDDD' then parseTokenOneToThreeDigits
+      when 'jMMM', 'jMMMM' then parseTokenWord
+      when 'jMM', 'jDD', 'jYY', 'jM', 'jD' then parseTokenOneOrTwoDigits
+      else new RegExp token.replace '\\', ''
+
+  # function to convert string input to date
+  addTimeToArrayFromToken = (token, input, config) ->
+    datePartArray = config._a
+    switch token
+      when 'jM', 'jMM'
+        datePartArray[1] = unless input? then 0 else ~~input - 1
+      when 'jMMM', 'jMMMM'
+        a = moment.langData(config._l).jMonthsParse input
+        # if we didn't find a month name, mark the date as invalid.
+        if a?
+          datePartArray[1] = a
+        else
+          config._isValid = no
+      when 'jD', 'jDD', 'jDDD', 'jDDDD'
+        datePartArray[2] = ~~input if input?
+      when 'jYY'
+        datePartArray[0] = ~~input + (if ~~input > 47 then 1300 else 1400)
+      when 'jYYYY', 'jYYYYY'
+        datePartArray[0] = ~~input
+    # if the input is null, the date is not valid
+    unless input?
+      config._isValid = no
+    return
+
+  dateFromArray = (config) ->
+    [jy, jm, jd] = config._a
+    unless jy? or jm? or jd?
+      return [0, 0, 1]
+    jy or= 0
+    jm or= 0
+    jd or= 1
+    config._isValid = no unless 1 <= jd <= jMoment.jDaysInMonth jy, jm
+    g = toGregorian jy, jm, jd
+    [g.gy, g.gm, g.gd]
+
+
+  makeDateFromStringAndFormat = (config) ->
+    tokens = config._f.match formattingTokens
+    string = config._i
+    config._a = []
+    for token in tokens
+      parsedInput = (getParseRegexForToken(token, config).exec(string) or [])[0]
+      if parsedInput
+        string = string.slice string.indexOf(parsedInput) + parsedInput.length
+      # don't parse if it's not a know token
+      if formatTokenFunctions[token]
+        addTimeToArrayFromToken token, parsedInput, config
+    # add remaining unparsed input to the string
+    if string
+      config._il = string
+    dateFromArray config
+
+  makeMoment = (input, format, lang, utc) ->
+    config =
+      _i: input
+      _f: format
+      _l: lang
+    if format
+      if isArray format
+        date = makeDateFromStringAndArray config
+        format[i] = 'YYYY-MM-DD-' + escapeParseTokens(f) for f, i in format
+      else
+        date = makeDateFromStringAndFormat config
+        format = 'YYYY-MM-DD-' + escapeParseTokens format
+      input = leftZeroFill(date[0], 4) + '-' +
+          leftZeroFill(date[1] + 1, 2) + '-' +
+          leftZeroFill(date[2], 2) + '-' + input
+    if utc
+      m = moment.utc.call this, input, format, lang
+    else
+      m = moment.call this, input, format, lang
+    m._isValid = no if config._isValid is no
     m.__proto__ = jMoment.fn
     m
-  jMoment[key] = value for own key, value of moment
+
+  jMoment = (input, format, lang) -> makeMoment input, format, lang, no
+
+  extend jMoment, moment
   jMoment.fn = {}
   jMoment.fn.__proto__ = moment.fn
+
+  jMoment.utc = (input, format, lang) -> makeMoment input, format, lang, yes
 
   ###
       Methods
@@ -197,7 +341,10 @@
   jMoment.fn.jYears = jMoment.fn.jYear
 
   jMoment.fn.jMonth = (input) ->
-    if typeof input is 'number'
+    if input?
+      if typeof input is 'string'
+        input = @lang().jMonthsParse input
+        if typeof input isnt 'number' then return this
       {jy, jm, jd} = toJalaali @year(), @month(), @date()
       lastDay = Math.min jd, jMoment.jDaysInMonth jy, input
       {gy, gm, gd} = toGregorian jy, input, lastDay
@@ -282,6 +429,7 @@
   mod = (a, b) -> a - ~~(a / b) * b
 
   # @see: http://www.astro.uni.torun.pl/~kb/Papers/EMP/PersianC-EMP.htm
+  # @see: http://www.fourmilab.ch/documents/calendar/
 
   # This function determines if the Jalaali (Persian) year is
   # leap (366-day long) or is the common year (365 days), and
