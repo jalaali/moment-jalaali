@@ -125,7 +125,7 @@
 
   extend = (a, b) ->
     a[key] = value for own key, value of b
-    return
+    a
 
   isArray = (o) -> Object.prototype.toString.call(o) is '[object Array]'
 
