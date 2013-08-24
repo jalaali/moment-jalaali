@@ -274,7 +274,6 @@
     g = toGregorian jy, jm, jd
     [g.gy, g.gm, g.gd]
 
-
   makeDateFromStringAndFormat = (config) ->
     tokens = config._f.match formattingTokens
     string = config._i
@@ -344,7 +343,7 @@
       lastDay = Math.min jd, jMoment.jDaysInMonth input, jm
       {gy, gm, gd} = toGregorian input, jm, lastDay
       setDate.call this, gy, gm, gd
-      jMoment.updateOffset this
+      moment.updateOffset this
       this
     else
       toJalaali(@year(), @month(), @date()).jy
@@ -359,7 +358,7 @@
       lastDay = Math.min jd, jMoment.jDaysInMonth jy, input
       {gy, gm, gd} = toGregorian jy, input, lastDay
       setDate.call this, gy, gm, gd
-      jMoment.updateOffset this
+      moment.updateOffset this
       this
     else
       toJalaali(@year(), @month(), @date()).jm
@@ -370,7 +369,7 @@
       {jy, jm, jd} = toJalaali @year(), @month(), @date()
       {gy, gm, gd} = toGregorian jy, jm, input
       setDate.call this, gy, gm, gd
-      jMoment.updateOffset this
+      moment.updateOffset this
       this
     else
       toJalaali(@year(), @month(), @date()).jd
