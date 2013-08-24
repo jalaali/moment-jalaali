@@ -1,6 +1,8 @@
 'use strict'
 
-# Expose Moment Jalaali
+###
+  Expose Moment Jalaali.
+###
 ((root, factory) ->
   if typeof define is 'function' and define.amd
     define ['moment'], factory
@@ -8,6 +10,7 @@
     module.exports = factory require 'moment'
   else
     root.moment = factory root.moment
+  return
 ) this, (moment) ->
 
   throw new Error 'Cannot find moment' unless moment?
@@ -85,7 +88,7 @@
   ordinalizeToken = (func, period) ->
     (a) -> @lang().ordinal func.call(this, a), period
 
-  do ->
+  do -> # Needed to make `i` a cal variable
     while ordinalizeTokens.length
       i = ordinalizeTokens.pop()
       formatTokenFunctions['j' + i + 'o'] =
@@ -94,6 +97,7 @@
     while paddedTokens.length
       i = paddedTokens.pop()
       formatTokenFunctions['j' + i + i] = padToken formatTokenFunctions['j' + i], 2
+    return
 
   formatTokenFunctions.jDDDD = padToken formatTokenFunctions.jDDD, 3
 
@@ -117,8 +121,11 @@
     @_d['set' + utc + 'FullYear'](year)
     @_d['set' + utc + 'Month'](month)
     @_d['set' + utc + 'Date'](date)
+    return
 
-  extend = (a, b) -> a[key] = value for own key, value of b
+  extend = (a, b) ->
+    a[key] = value for own key, value of b
+    return
 
   isArray = (o) -> Object.prototype.toString.call(o) is '[object Array]'
 
@@ -126,7 +133,7 @@
       Languages
   ###
 
-  lang =
+  extend moment.langData().__proto__,
     _jMonths: [
       'Farvardin'
       'Ordibehesht'
@@ -171,7 +178,6 @@
         if @_jMonthsParse[i].test monthName
           return i
 
-  extend moment.langData().__proto__, lang
 
   ###
       Formatting
@@ -218,7 +224,9 @@
       array[i] = '[' + match + ']'
     array.join ''
 
-  # get the regex to find the next token
+  ###
+    Get the regex to find the next token.
+  ###
   getParseRegexForToken = (token, config) ->
     switch token
       when 'jDDDD' then parseTokenThreeDigits
@@ -229,7 +237,9 @@
       when 'jMM', 'jDD', 'jYY', 'jM', 'jD' then parseTokenOneOrTwoDigits
       else new RegExp token.replace '\\', ''
 
-  # function to convert string input to date
+  ###
+    Function to convert string input to date.
+  ###
   addTimeToArrayFromToken = (token, input, config) ->
     datePartArray = config._a
     switch token
@@ -425,22 +435,26 @@
     toJalaali: toJalaali
     toGregorian: toGregorian
 
+  ###
+    Helper functions used in conversion.
+  ###
   div = (a, b) -> ~~(a / b)
   mod = (a, b) -> a - ~~(a / b) * b
 
-  # @see: http://www.astro.uni.torun.pl/~kb/Papers/EMP/PersianC-EMP.htm
-  # @see: http://www.fourmilab.ch/documents/calendar/
+  ###
+    This function determines if the Jalaali (Persian) year is
+    leap (366-day long) or is the common year (365 days), and
+    finds the day in March (Gregorian calendar) of the first
+    day of the Jalaali year (jy).
 
-  # This function determines if the Jalaali (Persian) year is
-  # leap (366-day long) or is the common year (365 days), and
-  # finds the day in March (Gregorian calendar) of the first
-  # day of the Jalaali year (jy).
-  #
-  # @param jy Jalaali calendar year (-61 to 3177)
-  # @return
-  #   leap: number of years since the last leap year (0 to 4)
-  #   gy: Gregorian year of the beginning of Jalaali year
-  #   march: the March day of Farvardin the 1st (1st day of jy)
+    @param jy Jalaali calendar year (-61 to 3177)
+    @return
+      leap: number of years since the last leap year (0 to 4)
+      gy: Gregorian year of the beginning of Jalaali year
+      march: the March day of Farvardin the 1st (1st day of jy)
+    @see: http://www.astro.uni.torun.pl/~kb/Papers/EMP/PersianC-EMP.htm
+    @see: http://www.fourmilab.ch/documents/calendar/
+  ###
   jalCal = (jy) ->
     # Jalaali years starting the 33-year rule.
     breaks = [
@@ -485,23 +499,27 @@
     gy: gy
     march: march
 
-  # Converts a date of the Jalaali calendar to the Julian Day number.
-  #
-  # @param jy Jalaali year (1 to 3100)
-  # @param jm Jalaali month (1 to 12)
-  # @param jd Jalaali day (1 to 29/31)
-  # @return Julian Day number
+  ###
+    Converts a date of the Jalaali calendar to the Julian Day number.
+
+    @param jy Jalaali year (1 to 3100)
+    @param jm Jalaali month (1 to 12)
+    @param jd Jalaali day (1 to 29/31)
+    @return Julian Day number
+  ###
   j2d = (jy, jm, jd) ->
     {leap, gy, march} = jalCal jy
     g2d(gy, 3, march) + (jm - 1) * 31 - div(jm, 7) * (jm - 7) + jd - 1
 
-  # Converts the Julian Day number to a date in the Jalaali calendar.
-  #
-  # @param jdn Julian Day number
-  # @return
-  #   jy: Jalaali year (1 to 3100)
-  #   jm: Jalaali month (1 to 12)
-  #   jd: Jalaali day (1 to 29/31)
+  ###
+    Converts the Julian Day number to a date in the Jalaali calendar.
+
+    @param jdn Julian Day number
+    @return
+      jy: Jalaali year (1 to 3100)
+      jm: Jalaali month (1 to 12)
+      jd: Jalaali day (1 to 29/31)
+  ###
   d2j = (jdn) ->
     # Calculate Gregorian year (gy).
     {gy} = d2g jdn
@@ -527,33 +545,39 @@
       k += 1 if leap is 1
     jm = 7 + div(k, 30)
     jd = mod(k, 30) + 1
-    return jy: jy, jm: jm, jd: jd
+    jy: jy
+    jm: jm
+    jd: jd
 
-  # Calculates the Julian Day number from Gregorian or Julian
-  # calendar dates. This integer number corresponds to the noon of
-  # the date (i.e. 12 hours of Universal Time).
-  # The procedure was tested to be good since 1 March, -100100 (of both
-  # calendars) up to a few million years into the future.
-  #
-  # @param gy Calendar year (years BC numbered 0, -1, -2, ...)
-  # @param gm Calendar month (1 to 12)
-  # @param gd Calendar day of the month (1 to 28/29/30/31)
-  # @return Julian Day number
+  ###
+    Calculates the Julian Day number from Gregorian or Julian
+    calendar dates. This integer number corresponds to the noon of
+    the date (i.e. 12 hours of Universal Time).
+    The procedure was tested to be good since 1 March, -100100 (of both
+    calendars) up to a few million years into the future.
+
+    @param gy Calendar year (years BC numbered 0, -1, -2, ...)
+    @param gm Calendar month (1 to 12)
+    @param gd Calendar day of the month (1 to 28/29/30/31)
+    @return Julian Day number
+  ###
   g2d = (gy, gm, gd) ->
     d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4) +
         div(153 * mod(gm + 9, 12) + 2, 5) + gd - 34840408
     d = d - div(div(gy + 100100 + div(gm - 8, 6), 100) * 3, 4) + 752
     d
 
-  # Calculates Gregorian and Julian calendar dates from the Julian Day number
-  # (jdn) for the period since jdn=-34839655 (i.e. the year -100100 of both
-  # calendars) to some millions years ahead of the present.
-  #
-  # @param jdn Julian Day number
-  # @return
-  #   gy: Calendar year (years BC numbered 0, -1, -2, ...)
-  #   gm: Calendar month (1 to 12)
-  #   gd: Calendar day of the month M (1 to 28/29/30/31)
+  ###
+    Calculates Gregorian and Julian calendar dates from the Julian Day number
+    (jdn) for the period since jdn=-34839655 (i.e. the year -100100 of both
+    calendars) to some millions years ahead of the present.
+
+    @param jdn Julian Day number
+    @return
+      gy: Calendar year (years BC numbered 0, -1, -2, ...)
+      gm: Calendar month (1 to 12)
+      gd: Calendar day of the month M (1 to 28/29/30/31)
+  ###
   d2g = (jdn) ->
     j = 4 * jdn + 139361631
     j = j + div(div(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908
