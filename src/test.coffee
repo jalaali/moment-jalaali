@@ -487,7 +487,7 @@ describe 'moment', ->
 
   describe '#startOf', ->
 
-    it 'should work as default without jYear and jMonth', ->
+    it 'should work as expected without jYear and jMonth', ->
       m = moment '1981-08-17 07:10:20'
       m.startOf('year').format('YYYY-MM-DD HH:mm:ss')
           .should.be.equal '1981-01-01 00:00:00'
@@ -501,10 +501,49 @@ describe 'moment', ->
       m.startOf('week').format('YYYY-MM-DD HH:mm:ss')
           .should.be.equal '1981-08-15 00:00:00'
 
-    it 'should return start of Jalaali year', ->
+    it 'should return start of Jalaali year, month and date', ->
       m = moment '1981-08-17 07:10:20'
       m.startOf('jYear').format('jYYYY-jMM-jDD HH:mm:ss')
           .should.be.equal '1360-01-01 00:00:00'
+      m = moment '1981-08-17 07:10:20'
+      m.startOf('jMonth').format('jYYYY-jMM-jDD HH:mm:ss')
+          .should.be.equal '1360-05-01 00:00:00'
+      m = moment '1981-08-17 07:10:20'
+      m.startOf('day').format('jYYYY-jMM-jDD HH:mm:ss')
+          .should.be.equal '1360-05-26 00:00:00'
+      m = moment '1981-08-17 07:10:20'
+      m.startOf('week').format('jYYYY-jMM-jDD HH:mm:ss')
+          .should.be.equal '1360-05-24 00:00:00'
+
+  describe '#endOf', ->
+
+    it 'should work as expected without jYear and jMonth', ->
+      m = moment '1981-08-17 07:10:20'
+      m.endOf('year').format('YYYY-MM-DD HH:mm:ss')
+          .should.be.equal '1981-12-31 23:59:59'
+      m = moment '1981-08-17 07:10:20'
+      m.endOf('month').format('YYYY-MM-DD HH:mm:ss')
+          .should.be.equal '1981-08-31 23:59:59'
+      m = moment '1981-08-17 07:10:20'
+      m.endOf('day').format('YYYY-MM-DD HH:mm:ss')
+          .should.be.equal '1981-08-17 23:59:59'
+      m = moment '1981-08-17 07:10:20'
+      m.endOf('week').format('YYYY-MM-DD HH:mm:ss')
+          .should.be.equal '1981-08-21 23:59:59'
+
+    it 'should return end of Jalaali year, month and date', ->
+      m = moment '1981-08-17 07:10:20'
+      m.endOf('jYear').format('jYYYY-jMM-jDD HH:mm:ss')
+          .should.be.equal '1360-12-29 23:59:59'
+      m = moment '1981-08-17 07:10:20'
+      m.endOf('jMonth').format('jYYYY-jMM-jDD HH:mm:ss')
+          .should.be.equal '1360-05-31 23:59:59'
+      m = moment '1981-08-17 07:10:20'
+      m.endOf('day').format('jYYYY-jMM-jDD HH:mm:ss')
+          .should.be.equal '1360-05-26 23:59:59'
+      m = moment '1981-08-17 07:10:20'
+      m.endOf('week').format('jYYYY-jMM-jDD HH:mm:ss')
+          .should.be.equal '1360-05-30 23:59:59'
 
   describe '#isValid', ->
 

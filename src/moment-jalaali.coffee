@@ -451,6 +451,18 @@
     year = jWeekOfYear(this, @lang()._week.dow, @lang()._week.doy).year
     unless input? then year else @add 'y', input - year
 
+  jMoment.fn.add = (val, units) ->
+    if typeof val is 'string'
+      [val, units] = [units, val]
+    units = normalizeUnits units
+    if units is 'jyear'
+      @jYear @jYear() + val
+    else if units is 'jmonth'
+      @jMonth @jMonth() + val
+    else
+      moment.fn.add.call this, units, val
+    this
+
   jMoment.fn.startOf = (units) ->
     units = normalizeUnits units
     if units in ['jyear', 'jmonth']
