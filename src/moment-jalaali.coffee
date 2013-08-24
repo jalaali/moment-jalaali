@@ -35,7 +35,10 @@
         YY | # year
         gg(ggg?)? | # week year
       ) |
-      . # any other character
+      (\\)? # escape formatting by an adding a \
+      ( # moment default formatting tokens
+        Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]? |YYYYY|YYYY|YY |
+        gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|SS?S?|X|zz?|ZZ?|.)
     ///g
   localFormattingTokens =
     ///
@@ -130,6 +133,17 @@
   isArray = (o) -> Object.prototype.toString.call(o) is '[object Array]'
 
   ###
+    Compare two arrays, return the number of differences.
+  ###
+  compareArrays = (array1, array2) ->
+    len = Math.min array1.length , array2.length
+    lengthDiff = Math.abs array1.length - array2.length
+    diffs = 0
+    for i in [0...len] by 1
+      diffs += 1 if ~~array1[i] isnt ~~array2[i]
+    diffs + lengthDiff
+
+  ###
       Languages
   ###
 
@@ -190,7 +204,7 @@
 
     (mom) ->
       output = ''
-      for match, i in array
+      for match in array
         if match instanceof Function
           output += '[' + match.call(mom, format) + ']'
         else
@@ -218,11 +232,23 @@
       Parsing
   ###
 
-  escapeParseTokens = (format) ->
-    array = format.match formattingTokens
-    for match, i in array when formatTokenFunctions[match]
-      array[i] = '[' + match + ']'
-    array.join ''
+  removeParsedTokens = (config) ->
+    string = config._i
+    input = ''
+    format = ''
+
+    array = config._f.match formattingTokens
+    for match in array
+      parsed = (getParseRegexForToken(match, config).exec(string) or [])[0]
+      if parsed
+        string = string.slice string.indexOf(parsed) + parsed.length
+      unless formatTokenFunctions[match] instanceof Function
+        format += match
+        input += parsed if parsed
+
+    config._i = input
+    config._f = format
+    return
 
   ###
     Get the regex to find the next token.
@@ -235,6 +261,17 @@
       when 'jDDD' then parseTokenOneToThreeDigits
       when 'jMMM', 'jMMMM' then parseTokenWord
       when 'jMM', 'jDD', 'jYY', 'jM', 'jD' then parseTokenOneOrTwoDigits
+      when 'DDDD' then parseTokenThreeDigits
+      when 'YYYY' then parseTokenFourDigits
+      when 'YYYYY' then parseTokenSixDigits
+      when 'S', 'SS', 'SSS', 'DDD' then parseTokenOneToThreeDigits
+      when 'MMM', 'MMMM', 'dd', 'ddd', 'dddd' then parseTokenWord
+      when 'a', 'A' then moment.langData(config._l)._meridiemParse
+      when 'X' then parseTokenTimestampMs
+      when 'Z', 'ZZ' then parseTokenTimezone
+      when 'T' then parseTokenT
+      when 'MM', 'DD', 'YY', 'HH', 'hh', 'mm', 'ss', \
+           'M', 'D', 'd', 'H', 'h', 'm', 's' then parseTokenOneOrTwoDigits
       else new RegExp token.replace '\\', ''
 
   ###
@@ -272,6 +309,11 @@
     jd or= 1
     config._isValid = no unless 1 <= jd <= jMoment.jDaysInMonth jy, jm
     g = toGregorian jy, jm, jd
+    j = toJalaali g.gy, g.gm, g.gd
+    config._jDiff = 0
+    config._jDiff += 1 if ~~j.jy isnt jy
+    config._jDiff += 1 if ~~j.jm isnt jm
+    config._jDiff += 1 if ~~j.jd isnt jd
     [g.gy, g.gm, g.gd]
 
   makeDateFromStringAndFormat = (config) ->
@@ -290,6 +332,24 @@
       config._il = string
     dateFromArray config
 
+  makeDateFromStringAndArray = (config, utc) ->
+    scoreToBeat = 99
+    for format in config._f
+      tempConfig = extend {}, config
+      tempConfig._f = format
+      tempMoment = makeMoment config._i, format, config._l, utc
+
+      currentScore = compareArrays tempMoment._a, tempMoment.toArray()
+      currentScore += tempMoment._jDiff
+
+      # If there is any input that was not parsed add a penalty for that format.
+      currentScore += tempMoment._il.length if tempMoment._il
+
+      if currentScore < scoreToBeat
+        scoreToBeat = currentScore
+        bestMoment = tempMoment
+    bestMoment
+
   makeMoment = (input, format, lang, utc) ->
     config =
       _i: input
@@ -297,19 +357,20 @@
       _l: lang
     if format
       if isArray format
-        date = makeDateFromStringAndArray config
-        format[i] = 'YYYY-MM-DD-' + escapeParseTokens(f) for f, i in format
+        return makeDateFromStringAndArray config, utc
       else
         date = makeDateFromStringAndFormat config
-        format = 'YYYY-MM-DD-' + escapeParseTokens format
-      input = leftZeroFill(date[0], 4) + '-' +
-          leftZeroFill(date[1] + 1, 2) + '-' +
-          leftZeroFill(date[2], 2) + '-' + input
+        removeParsedTokens config
+        format = 'YYYY-MM-DD-' + config._f
+        input = leftZeroFill(date[0], 4) + '-' +
+            leftZeroFill(date[1] + 1, 2) + '-' +
+            leftZeroFill(date[2], 2) + '-' + config._i
     if utc
       m = moment.utc.call this, input, format, lang
     else
       m = moment.call this, input, format, lang
     m._isValid = no if config._isValid is no
+    m._jDiff = config._jDiff or 0
     m.__proto__ = jMoment.fn
     m
 

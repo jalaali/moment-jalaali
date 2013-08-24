@@ -32,6 +32,8 @@ describe 'moment', ->
     it 'should parse when only Jalaali year is in the format', ->
       m = moment '08 1360 17', 'MM jYYYY DD'
       m.format('YYYY-MM-DD').should.be.equal '1981-08-17'
+      m = moment '08 60 17', 'MM jYY DD'
+      m.format('YYYY-MM-DD').should.be.equal '1981-08-17'
 
     it 'should parse when only Jalaali month is in the format', ->
       m = moment '1981 5 17', 'YYYY jM D'
@@ -76,6 +78,31 @@ describe 'moment', ->
       m = moment.utc '1360/5/26 07:10:20', 'jYYYY/jM/jD hh:mm:ss'
       m.format('YYYY-MM-DD hh:mm:ss Z')
           .should.be.equal '1981-08-17 07:10:20 +00:00'
+
+    it 'should parse with a format array', ->
+      m = moment '60 11 12', ['D YY M', 'M D YY', 'YY M D']
+      m.format('YY-MM-DD').should.be.equal '60-11-12'
+      [p1, p2, p3] = ['jYY jM jD', 'jM jD jYY', 'jD jYY jM']
+      m = moment '10 11 12', [p1, p2, p3]
+      m.format('jYY-jMM-jDD').should.be.equal '10-11-12'
+      m = moment '10 11 12', [p2, p3, p1]
+      m.format('jYY-jMM-jDD').should.be.equal '12-10-11'
+      m = moment '10 11 12', [p3, p1, p2]
+      m.format('jYY-jMM-jDD').should.be.equal '11-12-10'
+      m = moment '10 11 12', [p3, p2, p1]
+      m.format('jYY-jMM-jDD').should.be.equal '11-12-10'
+      m = moment '60-11-12', [p3, p2, p1]
+      m.format('jYY-jMM-jDD').should.be.equal '60-11-12'
+      m = moment '60 11 12', [p3, p2, p1]
+      m.format('jYY-jMM-jDD').should.be.equal '60-11-12'
+      m = moment '60 8 31', ['YY M D', 'jYY jM jD']
+      m.format('YY-MM-DD').should.be.equal '60-08-31'
+      m = moment '60 8 31', ['jYY jM jD', 'YY M D']
+      m.format('YY-MM-DD').should.be.equal '60-08-31'
+      m = moment '60 5 31', ['YY M D', 'jYY jM jD']
+      m.format('YY-MM-DD').should.be.equal '60-05-31'
+      m = moment '60 5 31', ['jYY jM jD', 'YY M D']
+      m.format('jYY-jMM-jDD').should.be.equal '60-05-31'
 
   describe '#format', ->
 
