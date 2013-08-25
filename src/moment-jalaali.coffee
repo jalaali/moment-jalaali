@@ -95,11 +95,12 @@
     while ordinalizeTokens.length
       i = ordinalizeTokens.pop()
       formatTokenFunctions['j' + i + 'o'] =
-        ordinalizeToken formatTokenFunctions['j' + i], i
+          ordinalizeToken formatTokenFunctions['j' + i], i
 
     while paddedTokens.length
       i = paddedTokens.pop()
-      formatTokenFunctions['j' + i + i] = padToken formatTokenFunctions['j' + i], 2
+      formatTokenFunctions['j' + i + i] =
+          padToken formatTokenFunctions['j' + i], 2
     return
 
   formatTokenFunctions.jDDDD = padToken formatTokenFunctions.jDDD, 3

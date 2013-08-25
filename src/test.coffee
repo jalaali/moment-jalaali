@@ -1,7 +1,7 @@
 'use strict'
 
 chai = require 'chai'
-moment = require './moment-jalaali'
+moment = require '../moment-jalaali-min'
 
 chai.should()
 
