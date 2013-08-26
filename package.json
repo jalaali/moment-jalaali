@@ -32,6 +32,7 @@
     "coffee-script": "~1.6.3",
     "chai": "~1.7.2",
     "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.9",
     "grunt-contrib-watch": "~0.5.2",
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-contrib-uglify": "~0.2.2",
