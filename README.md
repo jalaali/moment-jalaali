@@ -3,6 +3,9 @@ moment-jalaali
 
 A Jalaali (Jalali, Persian, Khorshidi, Shamsi) calendar system plugin for moment.js.
 
+[![Dependency Status](https://gemnasium.com/behrang/moment-jalaali.png)](https://gemnasium.com/behrang/moment-jalaali)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/behrang/moment-jalaali/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 About
 -----
 
@@ -98,7 +101,3 @@ License
 -------
 
 MIT
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/behrang/moment-jalaali/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
