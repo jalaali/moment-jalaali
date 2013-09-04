@@ -478,6 +478,8 @@
     else
       moment.fn.startOf.call this, units
 
+  jMoment.fn.clone = -> jMoment this
+
   ###
       Statics
   ###

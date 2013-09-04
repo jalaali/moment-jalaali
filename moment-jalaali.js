@@ -598,6 +598,9 @@
         return moment.fn.startOf.call(this, units);
       }
     };
+    jMoment.fn.clone = function() {
+      return jMoment(this);
+    };
     /*
         Statics
     */

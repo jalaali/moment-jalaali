@@ -560,7 +560,17 @@ describe 'moment', ->
       moment('1360-12-30', 'jYYYY-jMM-jDD').isValid().should.be.false
       moment('1360-12-31', 'jYYYY-jMM-jDD').isValid().should.be.false
 
-  describe '#jIsLeapYear', ->
+  describe '#clone', ->
+
+    it 'should return a cloned instance', ->
+      m = moment('1360/5/26', 'jYYYY/jM/jD')
+      c = m.clone()
+      m.add 1, 'jYear'
+      m.add 4, 'day'
+      m.format('jYY/jM/jD').should.be.equal '61/5/30'
+      c.format('jYY/jM/jD').should.be.equal '60/5/26'
+
+  describe '.jIsLeapYear', ->
 
     it 'should return true for Jalaali leap years and false otherwise', ->
       moment.jIsLeapYear(1391).should.be.true
