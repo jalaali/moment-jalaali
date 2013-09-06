@@ -587,3 +587,15 @@ describe 'moment', ->
       moment.jIsLeapYear(1402).should.be.false
       moment.jIsLeapYear(1403).should.be.true
       moment.jIsLeapYear(1404).should.be.false
+
+  describe '.loadPersian', ->
+
+    it 'should load Persian lang', ->
+      ol = moment.lang()
+      moment.loadPersian()
+      m = moment '1981/08/17'
+      m.format('D MMMM YYYY').should.be.equal '17 اوت 1981'
+      m.format('jD jMMMM jYYYY').should.be.equal '26 امرداد 1360'
+      m.calendar().should.be.equal '1360/05/26'
+      m.format('LLLL').should.be.equal 'دوشنبه، 26 امرداد 1360 00:00'
+      m.format('llll').should.be.equal 'دوشنبه، 26 امر 1360 00:00'
