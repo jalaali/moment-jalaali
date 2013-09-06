@@ -98,6 +98,12 @@ moment('2013-8-25 16:40:00', 'YYYY-M-D HH:mm:ss').endOf('jMonth').format('jYYYY/
 moment('1981 5 17', 'YYYY jM D').format('YYYY/MM/DD'); // 1981/07/17
 ```
 
+To add Persian language, use loadPersian method:
+
+```js
+moment.loadPersian()
+```
+
 License
 -------
 
