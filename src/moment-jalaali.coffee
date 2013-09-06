@@ -5,7 +5,8 @@
 ###
 ((root, factory) ->
   if typeof define is 'function' and define.amd
-    define ['moment'], factory
+    define ['moment'], (moment) ->
+      root.moment = factory moment
   else if typeof exports is 'object'
     module.exports = factory require 'moment'
   else
