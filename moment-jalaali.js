@@ -8,7 +8,9 @@
 
   (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-      define(['moment'], factory);
+      define(['moment'], function(moment) {
+        return root.moment = factory(moment);
+      });
     } else if (typeof exports === 'object') {
       module.exports = factory(require('moment'));
     } else {
