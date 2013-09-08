@@ -41,7 +41,8 @@
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-coffeelint": "0.0.7",
-    "grunt-shell": "~0.3.1"
+    "grunt-shell": "~0.3.1",
+    "bower": "~1.2.6"
   },
   "dependencies": {
     "moment": "~2.1.0"
