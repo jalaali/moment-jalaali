@@ -158,24 +158,17 @@
     moment._d['set' + utc + 'Date'](date)
   }
 
-  function getPrototypeOf(obj) {
-    if (Object.getPrototypeOf)
-      return Object.getPrototypeOf(obj)
-    return obj.__proto__ // jshint ignore:line
-  }
-
-  function setPrototypeOf(obj, proto) {
-    if (Object.setPrototypeOf)
-      return Object.setPrototypeOf(obj, proto)
-    obj.__proto__ = proto // jshint ignore:line
-    return obj
+  function objectCreate(parent) {
+    function F() {}
+    F.prototype = parent
+    return new F()
   }
 
   /************************************
       Languages
   ************************************/
 
-  extend(getPrototypeOf(moment.langData()),
+  extend(moment.langData().constructor.prototype,
     { _jMonths: [ 'Farvardin'
                 , 'Ordibehesht'
                 , 'Khordaad'
@@ -492,6 +485,7 @@
         }
       , date
       , m
+      , jm
     if (format) {
       if (isArray(format)) {
         return makeDateFromStringAndArray(config, utc)
@@ -512,8 +506,9 @@
     if (config._isValid === false)
       m._isValid = false
     m._jDiff = config._jDiff || 0
-    setPrototypeOf(m, jMoment.fn)
-    return m
+    jm = objectCreate(jMoment.fn)
+    extend(jm, m)
+    return jm
   }
 
   function jMoment(input, format, lang) {
@@ -521,8 +516,7 @@
   }
 
   extend(jMoment, moment)
-  jMoment.fn = {}
-  setPrototypeOf(jMoment.fn, moment.fn)
+  jMoment.fn = objectCreate(moment.fn)
 
   jMoment.utc = function (input, format, lang) {
     return makeMoment(input, format, lang, true)
