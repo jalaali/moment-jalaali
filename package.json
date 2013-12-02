@@ -21,7 +21,7 @@
   "main": "moment-jalaali.js",
   "scripts": {
     "test": "grunt test",
-    "prepublish": "grunt build"
+    "prepublish": "grunt test"
   },
   "homepage": "https://github.com/behrang/moment-jalaali",
   "bugs": {
