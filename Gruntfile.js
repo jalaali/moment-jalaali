@@ -56,6 +56,7 @@ module.exports = function (grunt) {
         , options:
           { stdout: true
           , stderr: true
+          , failOnError: true
           }
         }
       }
