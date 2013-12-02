@@ -1,7 +1,7 @@
 {
   "name": "moment-jalaali",
   "main": "moment-jalaali.js",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "homepage": "https://github.com/behrang/moment-jalaali",
   "authors": [
     "Behrang Noruzi Niya <behrangn@gmail.com>"
