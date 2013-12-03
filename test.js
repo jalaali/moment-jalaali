@@ -60,6 +60,8 @@ describe('moment', function() {
     it('should parse when Jalaali year and month are in the format', function() {
       var m = moment('17 1360 5', 'D jYYYY jM')
       m.format('YYYY-MM-DD').should.be.equal('1981-07-17')
+      m = moment('1392 7', 'jYYYY jM')
+      m.format('YYYY-MM-DD').should.be.equal('2013-09-23')
     })
 
     it('should parse when Jalaali year and date are in the format', function() {

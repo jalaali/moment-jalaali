@@ -369,7 +369,7 @@
       return [0, 0, 1]
     jy = jy || 0
     jm = jm || 0
-    jd = jd || 0
+    jd = jd || 1
     if (jd < 1 || jd > jMoment.jDaysInMonth(jy, jm))
       config._isValid = false
     g = toGregorian(jy, jm, jd)
