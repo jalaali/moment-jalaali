@@ -164,11 +164,19 @@
     return new F()
   }
 
+  function getPrototypeOf(object) {
+    if (Object.getPrototypeOf)
+      return Object.getPrototypeOf(object)
+    else if (''.__proto__) // jshint ignore:line
+      return object.__proto__ // jshint ignore:line
+    else
+      return object.constructor.prototype
+  }
+
   /************************************
       Languages
   ************************************/
-
-  extend(moment.langData().constructor.prototype,
+  extend(getPrototypeOf(moment.langData()),
     { _jMonths: [ 'Farvardin'
                 , 'Ordibehesht'
                 , 'Khordaad'
