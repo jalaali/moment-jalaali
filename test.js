@@ -667,10 +667,10 @@ describe('moment', function() {
         it('adds the correct number of months to the given date', function () {
             var m = moment("1393-04-08", "jYYYY-jMM-jDD");
             m.format("jMM").should.equal("04");
-            m.add(9, 'jMM');
+            m.add(9, 'jMonth');
             m.format("jYYYY").should.equal("1394");
             m.format("jMM").should.equal("01");
-            m.format("jDD").should.equal("08");
+            m.format("jDD").should.equal("09");
         });
 
     });
@@ -689,10 +689,10 @@ describe('moment', function() {
         it('adds the correct number of months to the given date', function () {
             var m = moment("1393-04-08", "jYYYY-jMM-jDD");
             m.format("jMM").should.equal("04");
-            m.subtract(9, 'jMM');
+            m.subtract(9, 'jMonth');
             m.format("jYYYY").should.equal("1392");
             m.format("jMM").should.equal("07");
-            m.format("jDD").should.equal("08");
+            m.format("jDD").should.equal("01");
         });
 
     });
