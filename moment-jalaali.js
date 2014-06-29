@@ -640,6 +640,24 @@
     return this
   };
 
+  jMoment.fn.subtract = function (val, units) {
+    var temp;
+    if (typeof val === 'string') {
+      temp = val;
+      val = units;
+      units = temp
+    }
+    units = normalizeUnits(units);
+    if (units === 'jyear') {
+      this.jYear(this.jYear() - val)
+    } else if (units === 'jmonth') {
+      this.jMonth(this.jMonth() - val)
+    } else {
+      moment.fn.subtract.call(this, units, val)
+    }
+    return this
+  };
+
   jMoment.fn.startOf = function (units) {
     units = normalizeUnits(units);
     if (units === 'jyear' || units === 'jmonth') {
