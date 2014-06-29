@@ -652,4 +652,49 @@ describe('moment', function() {
       moment.lang(ol)
     })
   })
+
+    describe('add()', function () {
+
+        it('adds the correct number of years to the given date', function () {
+            var m = moment("1393-04-08", "jYYYY-jMM-jDD");
+            m.format("jYYYY").should.equal("1393");
+            m.add(7, 'jYear');
+            m.format("jYYYY").should.equal("1400");
+            m.format("jMM").should.equal("04");
+            m.format("jDD").should.equal("08");
+        });
+
+        it('adds the correct number of months to the given date', function () {
+            var m = moment("1393-04-08", "jYYYY-jMM-jDD");
+            m.format("jMM").should.equal("04");
+            m.add(9, 'jMM');
+            m.format("jYYYY").should.equal("1394");
+            m.format("jMM").should.equal("01");
+            m.format("jDD").should.equal("08");
+        });
+
+    });
+
+    describe('subtract()', function () {
+
+        it('subtracts the correct number of years from the given date', function () {
+            var m = moment("1405-04-08", "jYYYY-jMM-jDD");
+            m.format("jYYYY").should.equal("1405");
+            m.subtract(12, 'jYear');
+            m.format("jYYYY").should.equal("1393");
+            m.format("jMM").should.equal("04");
+            m.format("jDD").should.equal("08");
+        });
+
+        it('adds the correct number of months to the given date', function () {
+            var m = moment("1393-04-08", "jYYYY-jMM-jDD");
+            m.format("jMM").should.equal("04");
+            m.subtract(9, 'jMM');
+            m.format("jYYYY").should.equal("1392");
+            m.format("jMM").should.equal("07");
+            m.format("jDD").should.equal("08");
+        });
+
+    });
+
 })
