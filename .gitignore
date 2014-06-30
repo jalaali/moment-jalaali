@@ -1,4 +1,13 @@
+# Node.js related files
 node_modules
 npm-debug.log
 bower_components
+
+# Minified code
 moment-jalaali-min.js
+
+# IntelliJ IDEA files
+*.iml
+*.ipr
+*.iws
+.idea
