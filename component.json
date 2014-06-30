@@ -14,5 +14,10 @@
     "convert"
   ],
   "repository": "jalaali/moment-jalaali",
-  "scripts": ["index.js"]
+  "scripts": [
+    "index.js"
+  ],
+  "dependencies": {
+    "moment/moment": "^2.7.0"
+  }
 }
