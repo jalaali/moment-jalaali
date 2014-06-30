@@ -2,10 +2,10 @@
 build: lint
 
 test: build
-	@mocha -R spec -u bdd -c --check-leaks test.js
+	@mocha --reporter spec --ui bdd --colors --check-leaks test.js
 
 dev: build
-	@mocha -R spec -u bdd -c --check-leaks -w test.js
+	@mocha --reporter spec --ui bdd --colors --check-leaks --watch test.js
 
 lint: lint-index lint-test
 
