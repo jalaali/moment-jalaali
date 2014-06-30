@@ -1,4 +1,3 @@
-'use strict';
 
 var chai = require('chai')
   , moment = require('./moment-jalaali')
@@ -87,7 +86,7 @@ describe('moment', function() {
     it('should parse format result', function() {
       var format = 'jYYYY/jM/jD hh:mm:ss.SSS a'
         , m = moment()
-      moment(m.format(format), format).isSame(m).should.be['true']
+      moment(m.format(format), format).isSame(m).should.be.true
     })
 
     it('should be able to parse in utc', function() {
@@ -594,17 +593,17 @@ describe('moment', function() {
 
   describe('#isValid', function() {
     it('should return true when a valid date is parsed and false otherwise', function() {
-      moment('1981-08-17', 'YYYY-MM-DD').isValid().should.be['true']
-      moment('1981-08-31', 'YYYY-MM-DD').isValid().should.be['true']
-      moment('1981-09-31', 'YYYY-MM-DD').isValid().should.be['false']
-      moment('1360 mordaad 26', 'jYYYY jMMMM jD').isValid().should.be['false']
-      moment('1360-05-26', 'jYYYY-jMM-jDD').isValid().should.be['true']
-      moment('1360-05-31', 'jYYYY-jMM-jDD').isValid().should.be['true']
-      moment('1360-07-30', 'jYYYY-jMM-jDD').isValid().should.be['true']
-      moment('1360-07-31', 'jYYYY-jMM-jDD').isValid().should.be['false']
-      moment('1360-12-29', 'jYYYY-jMM-jDD').isValid().should.be['true']
-      moment('1360-12-30', 'jYYYY-jMM-jDD').isValid().should.be['false']
-      moment('1360-12-31', 'jYYYY-jMM-jDD').isValid().should.be['false']
+      moment('1981-08-17', 'YYYY-MM-DD').isValid().should.be.true
+      moment('1981-08-31', 'YYYY-MM-DD').isValid().should.be.true
+      moment('1981-09-31', 'YYYY-MM-DD').isValid().should.be.false
+      moment('1360 mordaad 26', 'jYYYY jMMMM jD').isValid().should.be.false
+      moment('1360-05-26', 'jYYYY-jMM-jDD').isValid().should.be.true
+      moment('1360-05-31', 'jYYYY-jMM-jDD').isValid().should.be.true
+      moment('1360-07-30', 'jYYYY-jMM-jDD').isValid().should.be.true
+      moment('1360-07-31', 'jYYYY-jMM-jDD').isValid().should.be.false
+      moment('1360-12-29', 'jYYYY-jMM-jDD').isValid().should.be.true
+      moment('1360-12-30', 'jYYYY-jMM-jDD').isValid().should.be.false
+      moment('1360-12-31', 'jYYYY-jMM-jDD').isValid().should.be.false
     })
   })
 
@@ -621,20 +620,20 @@ describe('moment', function() {
 
   describe('.jIsLeapYear', function() {
     it('should return true for Jalaali leap years and false otherwise', function() {
-      moment.jIsLeapYear(1391).should.be['true']
-      moment.jIsLeapYear(1392).should.be['false']
-      moment.jIsLeapYear(1393).should.be['false']
-      moment.jIsLeapYear(1394).should.be['false']
-      moment.jIsLeapYear(1395).should.be['true']
-      moment.jIsLeapYear(1396).should.be['false']
-      moment.jIsLeapYear(1397).should.be['false']
-      moment.jIsLeapYear(1398).should.be['false']
-      moment.jIsLeapYear(1399).should.be['true']
-      moment.jIsLeapYear(1400).should.be['false']
-      moment.jIsLeapYear(1401).should.be['false']
-      moment.jIsLeapYear(1402).should.be['false']
-      moment.jIsLeapYear(1403).should.be['true']
-      moment.jIsLeapYear(1404).should.be['false']
+      moment.jIsLeapYear(1391).should.be.true
+      moment.jIsLeapYear(1392).should.be.false
+      moment.jIsLeapYear(1393).should.be.false
+      moment.jIsLeapYear(1394).should.be.false
+      moment.jIsLeapYear(1395).should.be.true
+      moment.jIsLeapYear(1396).should.be.false
+      moment.jIsLeapYear(1397).should.be.false
+      moment.jIsLeapYear(1398).should.be.false
+      moment.jIsLeapYear(1399).should.be.true
+      moment.jIsLeapYear(1400).should.be.false
+      moment.jIsLeapYear(1401).should.be.false
+      moment.jIsLeapYear(1402).should.be.false
+      moment.jIsLeapYear(1403).should.be.true
+      moment.jIsLeapYear(1404).should.be.false
     })
   })
 

@@ -2,8 +2,6 @@
 // author: Behrang Noruzi Niya
 // license: MIT
 
-'use strict';
-
 /************************************
     Expose Moment Jalaali
 ************************************/
@@ -90,7 +88,6 @@
           return leftZeroFill(this.jWeekYear(), 5)
         }
       }
-    , i
 
   function padToken(func, count) {
     return function (a) {
@@ -103,15 +100,18 @@
     }
   }
 
-  while (ordinalizeTokens.length) {
-    i = ordinalizeTokens.pop()
-    formatTokenFunctions['j' + i + 'o'] = ordinalizeToken(formatTokenFunctions['j' + i], i)
-  }
-  while (paddedTokens.length) {
-    i = paddedTokens.pop()
-    formatTokenFunctions['j' + i + i] = padToken(formatTokenFunctions['j' + i], 2)
-  }
-  formatTokenFunctions.jDDDD = padToken(formatTokenFunctions.jDDD, 3)
+  (function () {
+    var i
+    while (ordinalizeTokens.length) {
+      i = ordinalizeTokens.pop()
+      formatTokenFunctions['j' + i + 'o'] = ordinalizeToken(formatTokenFunctions['j' + i], i)
+    }
+    while (paddedTokens.length) {
+      i = paddedTokens.pop()
+      formatTokenFunctions['j' + i + i] = padToken(formatTokenFunctions['j' + i], 2)
+    }
+    formatTokenFunctions.jDDDD = padToken(formatTokenFunctions.jDDD, 3)
+  }())
 
   /************************************
       Helpers
@@ -167,8 +167,8 @@
   function getPrototypeOf(object) {
     if (Object.getPrototypeOf)
       return Object.getPrototypeOf(object)
-    else if (''.__proto__) // jshint ignore:line
-      return object.__proto__ // jshint ignore:line
+    else if (''.__proto__)
+      return object.__proto__
     else
       return object.constructor.prototype
   }
