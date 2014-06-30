@@ -9,5 +9,5 @@ moment-jalaali-min.js
 # IntelliJ IDEA files
 *.iml
 *.ipr
-*iws
+*.iws
 .idea
