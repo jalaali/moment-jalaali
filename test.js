@@ -659,18 +659,21 @@ describe('moment', function() {
             var m = moment("1393-04-08", "jYYYY-jMM-jDD");
             m.format("jYYYY").should.equal("1393");
             m.add(7, 'jYear');
-            m.format("jYYYY").should.equal("1400");
-            m.format("jMM").should.equal("04");
-            m.format("jDD").should.equal("08");
+            m.format("jYYYY-jMM-jDD").should.equal("1400-04-08");
         });
 
         it('adds the correct number of months to the given date', function () {
             var m = moment("1393-04-08", "jYYYY-jMM-jDD");
             m.format("jMM").should.equal("04");
             m.add(9, 'jMonth');
-            m.format("jYYYY").should.equal("1394");
-            m.format("jMM").should.equal("01");
-            m.format("jDD").should.equal("09");
+            m.format("jYYYY-jMM-jDD").should.equal("1394-01-08");
+        });
+
+        it("should work properly across leap years", function () {
+            var m = moment("1391-12-15", "jYYYY-jMM-jDD");
+            m.format("jMM").should.equal("12");
+            m.add(2, 'jMonth');
+            m.format('jYYYY-jMM-jDD').should.equal('1392-02-15');
         });
 
     });
@@ -690,9 +693,14 @@ describe('moment', function() {
             var m = moment("1393-04-08", "jYYYY-jMM-jDD");
             m.format("jMM").should.equal("04");
             m.subtract(9, 'jMonth');
-            m.format("jYYYY").should.equal("1392");
-            m.format("jMM").should.equal("07");
-            m.format("jDD").should.equal("01");
+            m.format("jYYYY-jMM-jDD").should.equal("1392-07-08");
+        });
+
+        it("should work properly across leap years", function () {
+            var m = moment("1392-02-12", "jYYYY-jMM-jDD");
+            m.format("jMM").should.equal("02");
+            m.subtract(2, 'jMonth');
+            m.format('jYYYY-jMM-jDD').should.equal('1391-12-12');
         });
 
     });
