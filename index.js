@@ -350,7 +350,7 @@ function dateFromArray(config) {
   jy = jy || 0
   jm = jm || 0
   jd = jd || 1
-  if (jd < 1 || jd > jMoment.jDaysInMonth(jy, jm))
+  if (jd < 1 || jd > jMoment.jDaysInMonth(jy, jm) || jm < 0 || jm > 11)
     config._isValid = false
   g = toGregorian(jy, jm, jd)
   j = toJalaali(g.gy, g.gm, g.gd)

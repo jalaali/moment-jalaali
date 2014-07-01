@@ -593,17 +593,20 @@ describe('moment', function() {
 
   describe('#isValid', function() {
     it('should return true when a valid date is parsed and false otherwise', function() {
-      moment('1981-08-17', 'YYYY-MM-DD').isValid().should.be.true
-      moment('1981-08-31', 'YYYY-MM-DD').isValid().should.be.true
-      moment('1981-09-31', 'YYYY-MM-DD').isValid().should.be.false
+      var jf = 'jYYYY/jMM/jDD'
+        , gf = 'YYYY-MM-DD'
+      moment('1981-08-17', gf).isValid().should.be.true
+      moment('1981-08-31', gf).isValid().should.be.true
+      moment('1981-09-31', gf).isValid().should.be.false
       moment('1360 mordaad 26', 'jYYYY jMMMM jD').isValid().should.be.false
-      moment('1360-05-26', 'jYYYY-jMM-jDD').isValid().should.be.true
-      moment('1360-05-31', 'jYYYY-jMM-jDD').isValid().should.be.true
-      moment('1360-07-30', 'jYYYY-jMM-jDD').isValid().should.be.true
-      moment('1360-07-31', 'jYYYY-jMM-jDD').isValid().should.be.false
-      moment('1360-12-29', 'jYYYY-jMM-jDD').isValid().should.be.true
-      moment('1360-12-30', 'jYYYY-jMM-jDD').isValid().should.be.false
-      moment('1360-12-31', 'jYYYY-jMM-jDD').isValid().should.be.false
+      moment('1360/05/26', jf).isValid().should.be.true
+      moment('1360/05/31', jf).isValid().should.be.true
+      moment('1360/07/30', jf).isValid().should.be.true
+      moment('1360/07/31', jf).isValid().should.be.false
+      moment('1360/12/29', jf).isValid().should.be.true
+      moment('1360/12/30', jf).isValid().should.be.false
+      moment('1360/12/31', jf).isValid().should.be.false
+      moment('1360/13/01', jf).isValid().should.be.false
     })
   })
 
