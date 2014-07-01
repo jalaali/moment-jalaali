@@ -128,7 +128,11 @@ function compareArrays(array1, array2) {
 }
 
 function normalizeUnits(units) {
-  return units ? unitAliases[units] || units.toLowerCase().replace(/(.)s$/, '$1') : units
+  if (units) {
+    var lowered = units.toLowerCase()
+    units = unitAliases[lowered] || lowered
+  }
+  return units
 }
 
 function setDate(moment, year, month, date) {

@@ -79,14 +79,14 @@ describe('moment', function() {
     })
 
     it('should parse with complex format', function() {
-      var m = moment('17 26 50 1981 50 8 50', 'D jD jYYYY YYYY M M jM')
+      var m = moment('17 26 50 1981 50 8 12', 'D jD jYYYY YYYY M M jM')
       m.format('YYYY-MM-DD').should.be.equal('1981-08-17')
     })
 
     it('should parse format result', function() {
-      var format = 'jYYYY/jM/jD hh:mm:ss.SSS a'
+      var f = 'jYYYY/jM/jD hh:mm:ss.SSS a'
         , m = moment()
-      moment(m.format(format), format).isSame(m).should.be.true
+      moment(m.format(f), f).isSame(m).should.be.true
     })
 
     it('should be able to parse in utc', function() {
@@ -645,7 +645,7 @@ describe('moment', function() {
       var ol = moment.lang()
         , m
       moment.loadPersian()
-      m = moment('1981/08/17')
+      m = moment('1981-08-17')
       m.format('D MMMM YYYY').should.be.equal('17 اوت 1981')
       m.format('jD jMMMM jYYYY').should.be.equal('26 امرداد 1360')
       m.calendar().should.be.equal('1360/05/26')
