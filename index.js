@@ -569,12 +569,14 @@ jMoment.fn.jMonth = function (input) {
         return this
     }
     j = toJalaali(this.year(), this.month(), this.date())
-    lastDay = j.jd
+    lastDay = Math.min(j.jd, jMoment.jDaysInMonth(j.jy, input))
     this.jYear(j.jy + div(input, 12))
     input = mod(input, 12)
-    j = toJalaali(this.year(), this.month(), this.date())
-    lastDay = Math.min(lastDay, jMoment.jDaysInMonth(j.jy, input))
-    g = toGregorian(j.jy, input, lastDay)
+    if (input < 0) {
+      input += 12
+      this.jYear(this.jYear() - 1)
+    }
+    g = toGregorian(this.jYear(), input, lastDay)
     setDate(this, g.gy, g.gm, g.gd)
     moment.updateOffset(this)
     return this
@@ -630,6 +632,24 @@ jMoment.fn.add = function (val, units) {
   return this
 }
 
+jMoment.fn.subtract = function (val, units) {
+  var temp
+  if (typeof val === 'string') {
+    temp = val
+    val = units
+    units = temp
+  }
+  units = normalizeUnits(units)
+  if (units === 'jyear') {
+    this.jYear(this.jYear() - val)
+  } else if (units === 'jmonth') {
+    this.jMonth(this.jMonth() - val)
+  } else {
+    moment.fn.subtract.call(this, units, val)
+  }
+  return this
+}
+
 jMoment.fn.startOf = function (units) {
   units = normalizeUnits(units)
   if (units === 'jyear' || units === 'jmonth') {
@@ -661,6 +681,12 @@ jMoment.fn.jWeeks = jMoment.fn.jWeek
 ************************************/
 
 jMoment.jDaysInMonth = function (year, month) {
+  year += div(month, 12)
+  month = mod(month, 12)
+  if (month < 0) {
+    month += 12
+    year -= 1
+  }
   if (month < 6) {
     return 31
   } else if (month < 11) {

@@ -624,7 +624,7 @@ describe('moment', function() {
   describe('#add', function () {
     it('should add gregorian dates correctly', function () {
       var gf = 'YYYY-M-D'
-        , m = moment('1981-8-17')
+        , m = moment('1981-8-17', 'YYYY-M-D')
       moment(m).add(1, 'day').format(gf).should.be.equal('1981-8-18')
       moment(m).add(10, 'days').format(gf).should.be.equal('1981-8-27')
       moment(m).add(30, 'days').format(gf).should.be.equal('1981-9-16')
@@ -643,7 +643,7 @@ describe('moment', function() {
 
     it('should add jalaali dates correctly', function () {
       var jf = 'jYYYY/jM/jD'
-        , m = moment('1981-8-17')
+        , m = moment('1360/5/26', 'jYYYY/jM/jD')
       moment(m).add(1, 'day').format(jf).should.be.equal('1360/5/27')
       moment(m).add(4, 'days').format(jf).should.be.equal('1360/5/30')
       moment(m).add(10, 'days').format(jf).should.be.equal('1360/6/5')
@@ -662,6 +662,78 @@ describe('moment', function() {
       moment(m).add(4, 'jyears').format(jf).should.be.equal('1364/5/26')
       moment(m).add(10, 'jyears').format(jf).should.be.equal('1370/5/26')
       moment(m).add(20, 'jyears').format(jf).should.be.equal('1380/5/26')
+    })
+
+    it('should retain last day of month when adding months or years', function () {
+      var jf = 'jYYYY/jM/jD'
+        , m = moment('1393/6/31', jf)
+      moment(m).add(1, 'jmonth').format(jf).should.be.equal('1393/7/30')
+      moment(m).add(5, 'jmonth').format(jf).should.be.equal('1393/11/30')
+      moment(m).add(6, 'jmonth').format(jf).should.be.equal('1393/12/29')
+
+      m = moment('1391/12/30', jf)
+      moment(m).add(1, 'jyear').format(jf).should.be.equal('1392/12/29')
+      moment(m).add(2, 'jyear').format(jf).should.be.equal('1393/12/29')
+      moment(m).add(3, 'jyear').format(jf).should.be.equal('1394/12/29')
+      moment(m).add(4, 'jyear').format(jf).should.be.equal('1395/12/30')
+    })
+  })
+
+  describe('#subtract', function () {
+    it('should subtract gregorian dates correctly', function () {
+      var gf = 'YYYY-M-D'
+        , m = moment('1981-8-17', 'YYYY-M-D')
+      moment(m).subtract(1, 'day').format(gf).should.be.equal('1981-8-16')
+      moment(m).subtract(10, 'days').format(gf).should.be.equal('1981-8-7')
+      moment(m).subtract(30, 'days').format(gf).should.be.equal('1981-7-18')
+      moment(m).subtract(60, 'days').format(gf).should.be.equal('1981-6-18')
+
+      moment(m).subtract(1, 'month').format(gf).should.be.equal('1981-7-17')
+      moment(m).subtract(2, 'months').format(gf).should.be.equal('1981-6-17')
+      moment(m).subtract(10, 'months').format(gf).should.be.equal('1980-10-17')
+      moment(m).subtract(20, 'months').format(gf).should.be.equal('1979-12-17')
+
+      moment(m).subtract(1, 'year').format(gf).should.be.equal('1980-8-17')
+      moment(m).subtract(2, 'years').format(gf).should.be.equal('1979-8-17')
+      moment(m).subtract(10, 'years').format(gf).should.be.equal('1971-8-17')
+      moment(m).subtract(20, 'years').format(gf).should.be.equal('1961-8-17')
+    })
+
+    it('should subtract jalaali dates correctly', function () {
+      var jf = 'jYYYY/jM/jD'
+        , m = moment('1360/5/26', 'jYYYY/jM/jD')
+      moment(m).subtract(1, 'day').format(jf).should.be.equal('1360/5/25')
+      moment(m).subtract(4, 'days').format(jf).should.be.equal('1360/5/22')
+      moment(m).subtract(10, 'days').format(jf).should.be.equal('1360/5/16')
+      moment(m).subtract(30, 'days').format(jf).should.be.equal('1360/4/27')
+      moment(m).subtract(60, 'days').format(jf).should.be.equal('1360/3/28')
+      moment(m).subtract(365, 'days').format(jf).should.be.equal('1359/5/26')
+
+      moment(m).subtract(1, 'jmonth').format(jf).should.be.equal('1360/4/26')
+      moment(m).subtract(2, 'jmonths').format(jf).should.be.equal('1360/3/26')
+      moment(m).subtract(10, 'jmonths').format(jf).should.be.equal('1359/7/26')
+      moment(m).subtract(20, 'jmonths').format(jf).should.be.equal('1358/9/26')
+
+      moment(m).subtract(1, 'jyear').format(jf).should.be.equal('1359/5/26')
+      moment(m).subtract(2, 'jyears').format(jf).should.be.equal('1358/5/26')
+      moment(m).subtract(3, 'jyears').format(jf).should.be.equal('1357/5/26')
+      moment(m).subtract(4, 'jyears').format(jf).should.be.equal('1356/5/26')
+      moment(m).subtract(10, 'jyears').format(jf).should.be.equal('1350/5/26')
+      moment(m).subtract(20, 'jyears').format(jf).should.be.equal('1340/5/26')
+    })
+
+    it('should retain last day of month when subtracting months or years', function () {
+      var jf = 'jYYYY/jM/jD'
+        , m = moment('1393/1/31', jf)
+      moment(m).subtract(1, 'jmonth').format(jf).should.be.equal('1392/12/29')
+      moment(m).subtract(6, 'jmonth').format(jf).should.be.equal('1392/7/30')
+      moment(m).subtract(7, 'jmonth').format(jf).should.be.equal('1392/6/31')
+
+      m = moment('1391/12/30', jf)
+      moment(m).subtract(1, 'jyear').format(jf).should.be.equal('1390/12/29')
+      moment(m).subtract(2, 'jyear').format(jf).should.be.equal('1389/12/29')
+      moment(m).subtract(3, 'jyear').format(jf).should.be.equal('1388/12/29')
+      moment(m).subtract(4, 'jyear').format(jf).should.be.equal('1387/12/30')
     })
   })
 
