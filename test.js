@@ -621,6 +621,50 @@ describe('moment', function() {
     })
   })
 
+  describe('#add', function () {
+    it('should add gregorian dates correctly', function () {
+      var gf = 'YYYY-M-D'
+        , m = moment('1981-8-17')
+      moment(m).add(1, 'day').format(gf).should.be.equal('1981-8-18')
+      moment(m).add(10, 'days').format(gf).should.be.equal('1981-8-27')
+      moment(m).add(30, 'days').format(gf).should.be.equal('1981-9-16')
+      moment(m).add(60, 'days').format(gf).should.be.equal('1981-10-16')
+
+      moment(m).add(1, 'month').format(gf).should.be.equal('1981-9-17')
+      moment(m).add(2, 'months').format(gf).should.be.equal('1981-10-17')
+      moment(m).add(10, 'months').format(gf).should.be.equal('1982-6-17')
+      moment(m).add(20, 'months').format(gf).should.be.equal('1983-4-17')
+
+      moment(m).add(1, 'year').format(gf).should.be.equal('1982-8-17')
+      moment(m).add(2, 'years').format(gf).should.be.equal('1983-8-17')
+      moment(m).add(10, 'years').format(gf).should.be.equal('1991-8-17')
+      moment(m).add(20, 'years').format(gf).should.be.equal('2001-8-17')
+    })
+
+    it('should add jalaali dates correctly', function () {
+      var jf = 'jYYYY/jM/jD'
+        , m = moment('1981-8-17')
+      moment(m).add(1, 'day').format(jf).should.be.equal('1360/5/27')
+      moment(m).add(4, 'days').format(jf).should.be.equal('1360/5/30')
+      moment(m).add(10, 'days').format(jf).should.be.equal('1360/6/5')
+      moment(m).add(30, 'days').format(jf).should.be.equal('1360/6/25')
+      moment(m).add(60, 'days').format(jf).should.be.equal('1360/7/24')
+      moment(m).add(365, 'days').format(jf).should.be.equal('1361/5/26')
+
+      moment(m).add(1, 'jmonth').format(jf).should.be.equal('1360/6/26')
+      moment(m).add(2, 'jmonths').format(jf).should.be.equal('1360/7/26')
+      moment(m).add(10, 'jmonths').format(jf).should.be.equal('1361/3/26')
+      moment(m).add(20, 'jmonths').format(jf).should.be.equal('1362/1/26')
+
+      moment(m).add(1, 'jyear').format(jf).should.be.equal('1361/5/26')
+      moment(m).add(2, 'jyears').format(jf).should.be.equal('1362/5/26')
+      moment(m).add(3, 'jyears').format(jf).should.be.equal('1363/5/26')
+      moment(m).add(4, 'jyears').format(jf).should.be.equal('1364/5/26')
+      moment(m).add(10, 'jyears').format(jf).should.be.equal('1370/5/26')
+      moment(m).add(20, 'jyears').format(jf).should.be.equal('1380/5/26')
+    })
+  })
+
   describe('.jIsLeapYear', function() {
     it('should return true for Jalaali leap years and false otherwise', function() {
       moment.jIsLeapYear(1391).should.be.true

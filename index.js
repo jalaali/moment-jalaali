@@ -22,7 +22,9 @@ var formattingTokens = /(\[[^\[]*\])|(\\)?j(Mo|MM?M?M?|Do|DDDo|DD?D?D?|w[o|w]?|Y
 
   , unitAliases =
     { jm: 'jmonth'
+    , jmonths: 'jmonth'
     , jy: 'jyear'
+    , jyears: 'jyear'
     }
 
   , formatFunctions = {}
@@ -567,7 +569,11 @@ jMoment.fn.jMonth = function (input) {
         return this
     }
     j = toJalaali(this.year(), this.month(), this.date())
-    lastDay = Math.min(j.jd, jMoment.jDaysInMonth(j.jy, input))
+    lastDay = j.jd
+    this.jYear(j.jy + div(input, 12))
+    input = mod(input, 12)
+    j = toJalaali(this.year(), this.month(), this.date())
+    lastDay = Math.min(lastDay, jMoment.jDaysInMonth(j.jy, input))
     g = toGregorian(j.jy, input, lastDay)
     setDate(this, g.gy, g.gm, g.gd)
     moment.updateOffset(this)
