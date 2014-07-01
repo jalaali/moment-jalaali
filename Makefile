@@ -1,22 +1,34 @@
 
-build/moment-jalaali.js:
+build/moment-jalaali.js: components index.js
+	@$(MAKE) lint
 	@component build -s moment -n moment-jalaali
 
+MOCHA_CMD = mocha --reporter spec --ui bdd --colors --check-leaks
+
 test: build/moment-jalaali.js
-	@mocha --reporter spec --ui bdd --colors --check-leaks test.js
+	@$(MOCHA_CMD) test.js
 
 dev: build/moment-jalaali.js
-	@mocha --reporter spec --ui bdd --colors --check-leaks --watch test.js
+	@$(MOCHA_CMD) --watch test.js
 
 lint: lint-index lint-test
 
-lint-index: index.js
+lint-index: node_modules
 	@eslint index.js
 
-lint-test: test.js
+lint-test: node_modules
 	@eslint --env mocha --rule 'no-unused-expressions: 0' test.js
+
+components: node_modules component.json
+	@component install && touch $@
+
+node_modules: package.json
+	@npm install && touch $@
 
 clean:
 	@rm -fr build
 
-.PHONY: build test dev lint lint-index lint-test clean
+clean-all: clean
+	@rm -fr components node_modules
+
+.PHONY: test dev lint lint-index lint-test clean clean-all

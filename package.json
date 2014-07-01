@@ -18,10 +18,9 @@
     "conversion",
     "convert"
   ],
-  "main": "moment-jalaali.js",
+  "main": "index.js",
   "scripts": {
-    "test": "grunt test",
-    "prepublish": "grunt test"
+    "test": "make test"
   },
   "homepage": "https://github.com/behrang/moment-jalaali",
   "bugs": {
