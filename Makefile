@@ -1,7 +1,8 @@
 
-build/moment-jalaali.js: components index.js
+build/moment-jalaali.js: components index.js builder/before.js builder/after.js
 	@$(MAKE) lint
-	@component build -s moment -n moment-jalaali
+	@mkdir -p build
+	@cat builder/before.js index.js builder/after.js > build/moment-jalaali.js
 
 MOCHA_CMD = mocha --reporter spec --ui bdd --colors --check-leaks
 
