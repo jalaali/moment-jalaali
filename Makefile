@@ -3,6 +3,9 @@ build/moment-jalaali.js: components index.js
 	@$(MAKE) lint
 	@component build -s moment -n moment-jalaali
 
+publish: build/moment-jalaali.js
+	npm publish
+
 MOCHA_CMD = mocha --reporter spec --ui bdd --colors --check-leaks
 
 test: build/moment-jalaali.js
@@ -31,4 +34,4 @@ clean:
 clean-all: clean
 	@rm -fr components node_modules
 
-.PHONY: test dev lint lint-index lint-test clean clean-all
+.PHONY: publish test dev lint lint-index lint-test clean clean-all
