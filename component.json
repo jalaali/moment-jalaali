@@ -18,6 +18,6 @@
     "index.js"
   ],
   "dependencies": {
-    "moment/moment": "^2.7.0"
+    "momentjs": "^2.7.0"
   }
 }
