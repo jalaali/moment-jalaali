@@ -1,6 +1,6 @@
 {
   "name": "moment-jalaali",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Jalaali (Jalali, Persian, Khorshidi, Shamsi) calendar system plugin for moment.js.",
   "keywords": [
     "jalaali",
