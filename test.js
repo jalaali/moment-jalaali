@@ -4,7 +4,7 @@ var chai = require('chai')
 
 chai.should()
 
-moment.lang('en'
+moment.locale('en'
 , { week:
     { dow: 6
     , doy: 12
@@ -758,7 +758,7 @@ describe('moment', function() {
 
   describe('.loadPersian', function() {
     it('should load Persian lang', function() {
-      var ol = moment.lang()
+      var ol = moment.locale()
         , m
       moment.loadPersian()
       m = moment('1981-08-17')
@@ -767,7 +767,7 @@ describe('moment', function() {
       m.calendar().should.be.equal('1360/05/26')
       m.format('LLLL').should.be.equal('دوشنبه، 26 امرداد 1360 00:00')
       m.format('llll').should.be.equal('دوشنبه، 26 امر 1360 00:00')
-      moment.lang(ol)
+      moment.locale(ol)
     })
   })
 })

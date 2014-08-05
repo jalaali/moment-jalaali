@@ -31,12 +31,13 @@
     "url": "git://github.com/behrang/moment-jalaali.git"
   },
   "devDependencies": {
-    "chai": "~1.8.0",
+    "chai": "~1.9.1",
     "component": "^1.0.0-rc5",
-    "eslint": "^0.6.2",
-    "mocha": "~1.12.0"
+    "eslint": "^0.7.4",
+    "mocha": "^1.21.3"
   },
   "dependencies": {
-    "moment": "^2.7.0"
+    "jalaali-js": "^0.2.0",
+    "moment": "^2.8.1"
   }
 }

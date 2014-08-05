@@ -58,4 +58,4 @@ require.define = function (name, exports) {
   };
 };
 
-require.register("moment-jalaali", function (exports, module) {
+require.register("jalaali-js", function (exports, module) {
