@@ -59,7 +59,8 @@ m.jWeekYear() // 1360
 
 m.add(1, 'jYear')
 m.add(2, 'jMonth')
-m.format('jYYYY/jM/jD') // 1361/7/26
+m.add(3, 'day')
+m.format('jYYYY/jM/jD') // 1361/7/29
 
 m.jMonth(11)
 m.startOf('jMonth')
