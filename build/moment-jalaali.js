@@ -450,10 +450,16 @@ function normalizeUnits(units) {
 }
 
 function setDate(moment, year, month, date) {
-  var utc = moment._isUTC ? 'UTC' : ''
-  moment._d['set' + utc + 'FullYear'](year)
-  moment._d['set' + utc + 'Month'](month)
-  moment._d['set' + utc + 'Date'](date)
+  var d = moment._d
+  if (moment._isUTC) {
+    /*eslint-disable new-cap*/
+    moment._d = new Date(Date.UTC(year, month, date,
+        d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()))
+    /*eslint-enable new-cap*/
+  } else {
+    moment._d = new Date(year, month, date,
+        d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds())
+  }
 }
 
 function objectCreate(parent) {

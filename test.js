@@ -735,6 +735,33 @@ describe('moment', function() {
       moment(m).subtract(3, 'jyear').format(jf).should.be.equal('1388/12/29')
       moment(m).subtract(4, 'jyear').format(jf).should.be.equal('1387/12/30')
     })
+
+    it('should subtract months correctly', function () {
+      var jf = 'jYYYY/jM/jD'
+        , m = moment('1393/1/31', jf)
+      moment(m).subtract(1, 'jmonth').format(jf).should.be.equal('1392/12/29')
+      moment(m).subtract(2, 'jmonth').format(jf).should.be.equal('1392/11/30')
+      moment(m).subtract(7, 'jmonth').format(jf).should.be.equal('1392/6/31')
+      moment(m).subtract(12, 'jmonth').format(jf).should.be.equal('1392/1/31')
+      moment(m).subtract(13, 'jmonth').format(jf).should.be.equal('1391/12/30')
+      moment(m).subtract(25, 'jmonth').format(jf).should.be.equal('1390/12/29')
+
+      m = moment('1393/1/1', jf)
+      moment(m).subtract(1, 'jmonth').format(jf).should.be.equal('1392/12/1')
+      moment(m).subtract(2, 'jmonth').format(jf).should.be.equal('1392/11/1')
+      moment(m).subtract(7, 'jmonth').format(jf).should.be.equal('1392/6/1')
+      moment(m).subtract(12, 'jmonth').format(jf).should.be.equal('1392/1/1')
+      moment(m).subtract(13, 'jmonth').format(jf).should.be.equal('1391/12/1')
+      moment(m).subtract(25, 'jmonth').format(jf).should.be.equal('1390/12/1')
+
+      m = moment('1393/1/10', jf)
+      moment(m).subtract(1, 'jmonth').format(jf).should.be.equal('1392/12/10')
+      moment(m).subtract(2, 'jmonth').format(jf).should.be.equal('1392/11/10')
+      moment(m).subtract(7, 'jmonth').format(jf).should.be.equal('1392/6/10')
+      moment(m).subtract(12, 'jmonth').format(jf).should.be.equal('1392/1/10')
+      moment(m).subtract(13, 'jmonth').format(jf).should.be.equal('1391/12/10')
+      moment(m).subtract(25, 'jmonth').format(jf).should.be.equal('1390/12/10')
+    })
   })
 
   describe('.jIsLeapYear', function() {
