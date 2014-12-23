@@ -93,6 +93,11 @@ To add Persian language, use loadPersian method:
 moment.loadPersian()
 ```
 
+moment-hijri
+------------
+
+Another calendar system plugin for `momentjs` is [`moment-hijri`](https://github.com/xsoh/moment-hijri) created by [@xsoh](https://github.com/xsoh).
+
 License
 -------
 
