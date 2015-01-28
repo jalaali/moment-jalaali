@@ -360,9 +360,9 @@ function dateFromArray(config) {
 
   if ((jy == null) && (jm == null) && (jd == null))
     return [0, 0, 1]
-  jy = jy || 0
-  jm = jm || 0
-  jd = jd || 1
+  jy = jy != null ? jy : 0
+  jm = jm != null ? jm : 0
+  jd = jd != null ? jd : 1
   if (jd < 1 || jd > jMoment.jDaysInMonth(jy, jm) || jm < 0 || jm > 11)
     config._isValid = false
   g = toGregorian(jy, jm, jd)

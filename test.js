@@ -607,6 +607,7 @@ describe('moment', function() {
       moment('1360/12/30', jf).isValid().should.be.false
       moment('1360/12/31', jf).isValid().should.be.false
       moment('1360/13/01', jf).isValid().should.be.false
+      moment('1393/11/00', jf).isValid().should.be.false
     })
   })
 
