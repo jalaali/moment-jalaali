@@ -528,6 +528,10 @@ jMoment.utc = function (input, format, lang) {
   return makeMoment(input, format, lang, true)
 }
 
+jMoment.unix = function (input) {
+  return makeMoment(input * 1000)
+}
+
 /************************************
     jMoment Prototype
 ************************************/

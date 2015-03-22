@@ -798,4 +798,11 @@ describe('moment', function() {
       moment.locale(ol)
     })
   })
+
+  describe('.unix', function () {
+    it('should create a moment with unix epoch', function () {
+      moment.unix(366841800).format('jYYYY/jM/jD').should.be.equal('1360/5/26')
+      moment.unix(1357763400).format('jYYYY/jM/jD').should.be.equal('1391/10/21')
+    })
+  })
 })
