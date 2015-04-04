@@ -138,15 +138,15 @@ function normalizeUnits(units) {
   return units
 }
 
-function setDate(moment, year, month, date) {
-  var d = moment._d
-  if (moment._isUTC) {
+function setDate(m, year, month, date) {
+  var d = m._d
+  if (m._isUTC) {
     /*eslint-disable new-cap*/
-    moment._d = new Date(Date.UTC(year, month, date,
+    m._d = new Date(Date.UTC(year, month, date,
         d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()))
     /*eslint-enable new-cap*/
   } else {
-    moment._d = new Date(year, month, date,
+    m._d = new Date(year, month, date,
         d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds())
   }
 }
@@ -416,7 +416,7 @@ function makeDateFromStringAndArray(config, utc) {
   for (i = 0; i < len; i += 1) {
     format = config._f[i]
     currentScore = 0
-    tempMoment = makeMoment(config._i, format, config._l, utc)
+    tempMoment = makeMoment(config._i, format, config._l, config._strict, utc)
 
     if (!tempMoment.isValid()) continue
 
@@ -483,15 +483,24 @@ function jWeekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
     Top Level Functions
 ************************************/
 
-function makeMoment(input, format, lang, utc) {
+function makeMoment(input, format, lang, strict, utc) {
+  if (typeof lang === 'boolean') {
+    utc = strict
+    strict = lang
+    lang = undefined
+  }
   var config =
       { _i: input
       , _f: format
       , _l: lang
+      , _strict: strict
+      , _isUTC: utc
       }
     , date
     , m
     , jm
+    , origInput = input
+    , origFormat = format
   if (format) {
     if (isArray(format)) {
       return makeDateFromStringAndArray(config, utc)
@@ -506,26 +515,29 @@ function makeMoment(input, format, lang, utc) {
     }
   }
   if (utc)
-    m = moment.utc(input, format, lang)
+    m = moment.utc(input, format, lang, strict)
   else
-    m = moment(input, format, lang)
+    m = moment(input, format, lang, strict)
   if (config._isValid === false)
     m._isValid = false
   m._jDiff = config._jDiff || 0
   jm = objectCreate(jMoment.fn)
   extend(jm, m)
+  if (strict && jm.isValid()) {
+    jm._isValid = jm.format(origFormat) === origInput
+  }
   return jm
 }
 
-function jMoment(input, format, lang) {
-  return makeMoment(input, format, lang, false)
+function jMoment(input, format, lang, strict) {
+  return makeMoment(input, format, lang, strict, false)
 }
 
 extend(jMoment, moment)
 jMoment.fn = objectCreate(moment.fn)
 
-jMoment.utc = function (input, format, lang) {
-  return makeMoment(input, format, lang, true)
+jMoment.utc = function (input, format, lang, strict) {
+  return makeMoment(input, format, lang, strict, true)
 }
 
 jMoment.unix = function (input) {

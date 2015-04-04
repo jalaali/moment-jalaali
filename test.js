@@ -611,6 +611,23 @@ describe('moment', function() {
     })
   })
 
+  describe('#isValid-strict', function () {
+    it('should return false when gregorian date is not strictly valid', function () {
+      var gf = 'YYYY-MM-DD'
+      moment('1981-08-17', gf).isValid().should.be.true
+      moment('1981-08-31', gf).isValid().should.be.true
+      moment('1981-08-311', gf).isValid().should.be.true
+      moment('1981-08-311', gf, true).isValid().should.be.false
+    })
+
+    it('should return false when jalaali date is not strictly valid', function () {
+      var jf = 'jYYYY/jMM/jDD'
+      moment('1360/05/26', jf).isValid().should.be.true
+      moment('1360/05/31', jf).isValid().should.be.true
+      moment('1360/05/311', jf, true).isValid().should.be.false
+    })
+  })
+
   describe('#clone', function() {
     it('should return a cloned instance', function() {
       var m = moment('1360/5/26', 'jYYYY/jM/jD')
