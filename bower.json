@@ -43,6 +43,6 @@
     "node"
   ],
   "dependencies": {
-    "momentjs": "^2.8.1"
+    "momentjs": "^2.9.0"
   }
 }
