@@ -695,6 +695,14 @@ jMoment.fn.startOf = function (units) {
   }
 }
 
+jMoment.fn.endOf = function (units) {
+  units = normalizeUnits(units)
+  if (units === undefined || units === 'milisecond') {
+    return this
+  }
+  return this.startOf(units).add(1, (units === 'isoweek' ? 'week' : units)).subtract(1, 'ms')
+}
+
 jMoment.fn.clone = function () {
   return jMoment(this)
 }
