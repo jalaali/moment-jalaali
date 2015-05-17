@@ -7,4 +7,4 @@ if (typeof exports == "object") {
 } else {
   this["moment"] = require("moment-jalaali");
 }
-})()
+})();
