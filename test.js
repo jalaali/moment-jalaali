@@ -822,4 +822,71 @@ describe('moment', function() {
       moment.unix(unix).format('jYYYY/jM/jD').should.be.equal('1360/5/26')
     })
   })
+
+  describe('#isSame', function () {
+    it('should work correctly for same year', function () {
+      var m1 = moment('2016-02-04')
+      var m2 = moment('2016-01-01')
+      var m3 = moment('2015-12-31')
+      var m4 = moment('2017-01-01')
+      m1.isSame(m2, 'year').should.be.true
+      m1.isSame(m3, 'year').should.be.false
+      m1.isSame(m4, 'year').should.be.false
+      m2.isSame(m3, 'year').should.be.false
+      m2.isSame(m4, 'year').should.be.false
+      m3.isSame(m4, 'year').should.be.false
+    })
+
+    it('should work correctly for same month', function () {
+      var m1 = moment('2016-02-04')
+      var m2 = moment('2016-02-01')
+      var m3 = moment('2016-01-01')
+      var m4 = moment('2016-03-01')
+      m1.isSame(m2, 'month').should.be.true
+      m1.isSame(m3, 'month').should.be.false
+      m1.isSame(m4, 'month').should.be.false
+      m2.isSame(m3, 'month').should.be.false
+      m2.isSame(m4, 'month').should.be.false
+      m3.isSame(m4, 'month').should.be.false
+    })
+
+    it('should work correctly for same day', function () {
+      var m1 = moment('2016-02-04 06:00')
+      var m2 = moment('2016-02-04 07:00')
+      var m3 = moment('2016-02-03 06:00')
+      var m4 = moment('2016-02-05 06:00')
+      m1.isSame(m2, 'day').should.be.true
+      m1.isSame(m3, 'day').should.be.false
+      m1.isSame(m4, 'day').should.be.false
+      m2.isSame(m3, 'day').should.be.false
+      m2.isSame(m4, 'day').should.be.false
+      m3.isSame(m4, 'day').should.be.false
+    })
+
+    it('should work correctly for same jyear', function () {
+      var m1 = moment('1394/11/15', 'jYYYY/jMM/jDD')
+      var m2 = moment('1394/01/01', 'jYYYY/jMM/jDD')
+      var m3 = moment('1393/11/15', 'jYYYY/jMM/jDD')
+      var m4 = moment('1395/11/15', 'jYYYY/jMM/jDD')
+      m1.isSame(m2, 'jyear').should.be.true
+      m1.isSame(m3, 'jyear').should.be.false
+      m1.isSame(m4, 'jyear').should.be.false
+      m2.isSame(m3, 'jyear').should.be.false
+      m2.isSame(m4, 'jyear').should.be.false
+      m3.isSame(m4, 'jyear').should.be.false
+    })
+
+    it('should work correctly for same jmonth', function () {
+      var m1 = moment('1394/11/15', 'jYYYY/jMM/jDD')
+      var m2 = moment('1394/11/01', 'jYYYY/jMM/jDD')
+      var m3 = moment('1394/10/15', 'jYYYY/jMM/jDD')
+      var m4 = moment('1394/12/15', 'jYYYY/jMM/jDD')
+      m1.isSame(m2, 'jmonth').should.be.true
+      m1.isSame(m3, 'jmonth').should.be.false
+      m1.isSame(m4, 'jmonth').should.be.false
+      m2.isSame(m3, 'jmonth').should.be.false
+      m2.isSame(m4, 'jmonth').should.be.false
+      m3.isSame(m4, 'jmonth').should.be.false
+    })
+  })
 })

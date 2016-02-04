@@ -1014,6 +1014,14 @@ jMoment.fn.endOf = function (units) {
   return this.startOf(units).add(1, (units === 'isoweek' ? 'week' : units)).subtract(1, 'ms')
 }
 
+jMoment.fn.isSame = function (other, units) {
+  units = normalizeUnits(units)
+  if (units === 'jyear' || units === 'jmonth') {
+    return moment.fn.isSame.call(this.startOf(units), other.startOf(units))
+  }
+  return moment.fn.isSame.call(this, other, units)
+}
+
 jMoment.fn.clone = function () {
   return jMoment(this)
 }
