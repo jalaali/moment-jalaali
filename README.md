@@ -79,6 +79,9 @@ moment('1392/12/30', 'jYYYY/jMM/jDD').isValid() // false (common year)
 moment.jIsLeapYear(1391) // true
 moment.jIsLeapYear(1392) // false
 
+moment.jDaysInMonth(1395, 11) // 30
+moment.jDaysInMonth(1394, 11) // 29
+
 moment('1392/6/3 16:40', 'jYYYY/jM/jD HH:mm').format('YYYY-M-D HH:mm:ss') // 2013-8-25 16:40:00
 
 moment('2013-8-25 16:40:00', 'YYYY-M-D HH:mm:ss').endOf('jMonth').format('jYYYY/jM/jD HH:mm:ss') // 1392/6/31 23:59:59
