@@ -96,6 +96,11 @@ To add Persian language, use loadPersian method:
 moment.loadPersian()
 ```
 
+ng-jalali-flat-datepicker
+-------------------------
+
+A lightweight angular.js date picker using `moment-jalaali` is ['thg303/ng-jalali-flat-datepicker'](https://github.com/thg303/ng-jalali-flat-datepicker) created by [@thg303](https://github.com/thg303).
+
 moment-hijri
 ------------
 
