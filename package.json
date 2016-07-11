@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "jalaali-js": "^0.2.0",
-    "moment": "^2.9.0"
+    "moment": "^2.12.0"
   }
 }
