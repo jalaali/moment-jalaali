@@ -1144,6 +1144,6 @@ if (typeof exports == "object") {
 } else if (typeof define == "function" && define.amd) {
   define([], function(){ return require("moment-jalaali"); });
 } else {
-  this["moment"] = require("moment-jalaali");
+  window["moment"] = require("moment-jalaali");
 }
 })();
