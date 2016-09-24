@@ -1056,7 +1056,7 @@ jMoment.jDaysInMonth = function (year, month) {
 jMoment.jIsLeapYear = jalaali.isLeapJalaaliYear
 
 jMoment.loadPersian = function () {
-  moment.updateLocale('fa'
+  moment.defineLocale('fa'
   , { months: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
     , monthsShort: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
     , weekdays: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_')
@@ -1144,6 +1144,6 @@ if (typeof exports == "object") {
 } else if (typeof define == "function" && define.amd) {
   define([], function(){ return require("moment-jalaali"); });
 } else {
-  window["moment"] = require("moment-jalaali");
+  this["moment"] = require("moment-jalaali");
 }
 })();
