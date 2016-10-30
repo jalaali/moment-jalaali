@@ -767,7 +767,7 @@ var symbolMap = {
     '۸': '8',
     '۹': '9',
     '۰': '0'
-};
+}
 
 jMoment.loadPersian = function () {
   moment.defineLocale('fa'
@@ -819,17 +819,17 @@ jMoment.loadPersian = function () {
       }
     , meridiemParse: /ق.ظ|ب.ظ/,
       isPM: function (input) {
-          return /ب.ظ/.test(input);
+          return /ب.ظ/.test(input)
       }
     , preparse: function (string) {
           return string.replace(/[۰-۹]/g, function (match) {
-              return numberMap[match];
-          }).replace(/،/g, ',');
+              return numberMap[match]
+          }).replace(/،/g, ',')
       }
     , postformat: function (string) {
           return string.replace(/\d/g, function (match) {
-              return symbolMap[match];
-          }).replace(/,/g, '،');
+              return symbolMap[match]
+          }).replace(/,/g, '،')
       }
     , jMonths: ('فروردین_اردیبهشت_خرداد_تیر_امرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_')
     , jMonthsShort: 'فرو_ارد_خرد_تیر_امر_شهر_مهر_آبا_آذر_دی_بهم_اسف'.split('_')
