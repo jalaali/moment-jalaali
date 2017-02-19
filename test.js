@@ -4,7 +4,7 @@ var chai = require('chai')
 
 chai.should()
 
-moment.locale('en'
+moment.updateLocale('en'
 , { week:
     { dow: 6
     , doy: 12
