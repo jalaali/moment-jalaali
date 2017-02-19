@@ -1,4 +1,4 @@
-﻿
+
 module.exports = jMoment
 
 var moment = require('moment')
