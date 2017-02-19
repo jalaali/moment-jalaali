@@ -490,8 +490,8 @@ function makeMoment(input, format, lang, strict, utc) {
     lang = undefined
   }
 
-  if (format && typeof format == "string")
-      format = fixFormat(format, moment);
+  if (format && typeof format === 'string')
+      format = fixFormat(format, moment)
 
   var config =
       { _i: input
@@ -552,22 +552,22 @@ jMoment.unix = function (input) {
     jMoment Prototype
 ************************************/
 
-function fixFormat(format, moment) {
+function fixFormat(format, _moment) {
     var i = 5
     var replace = function (input) {
-        return moment.localeData().longDateFormat(input) || input
+        return _moment.localeData().longDateFormat(input) || input
     }
     while (i > 0 && localFormattingTokens.test(format)) {
         i -= 1
         format = format.replace(localFormattingTokens, replace)
     }
-    return format;
+    return format
 }
 
 jMoment.fn.format = function (format) {
 
   if (format) {
-    format = fixFormat(format, this);
+    format = fixFormat(format, this)
 
     if (!formatFunctions[format]) {
       formatFunctions[format] = makeFormatFunction(format)
