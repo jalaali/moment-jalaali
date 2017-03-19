@@ -752,6 +752,30 @@ jMoment.jDaysInMonth = function (year, month) {
 jMoment.jIsLeapYear = jalaali.isLeapJalaaliYear
 
 jMoment.loadPersian = function () {
+  var symbolMap = {
+    '1': '۱',
+    '2': '۲',
+    '3': '۳',
+    '4': '۴',
+    '5': '۵',
+    '6': '۶',
+    '7': '۷',
+    '8': '۸',
+    '9': '۹',
+    '0': '۰'
+  }, numberMap = {
+    '۱': '1',
+    '۲': '2',
+    '۳': '3',
+    '۴': '4',
+    '۵': '5',
+    '۶': '6',
+    '۷': '7',
+    '۸': '8',
+    '۹': '9',
+    '۰': '0'
+  };
+
   moment.locale('fa', null)
   moment.defineLocale('fa'
   , { months: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
@@ -794,6 +818,16 @@ jMoment.loadPersian = function () {
       { dow: 6 // Saturday is the first day of the week.
       , doy: 12 // The week that contains Jan 1st is the first week of the year.
       }
+    , preparse: function (string) {
+      return string.replace(/[۰-۹]/g, function (match) {
+        return numberMap[match];
+      }).replace(/،/g, ',');
+    }
+    , postformat: function (string) {
+      return string.replace(/\d/g, function (match) {
+        return symbolMap[match];
+      }).replace(/,/g, '،');
+    }
     , meridiem: function (hour) {
         return hour < 12 ? 'ق.ظ' : 'ب.ظ'
       }
