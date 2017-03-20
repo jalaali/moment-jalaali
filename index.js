@@ -1,8 +1,7 @@
 
 module.exports = jMoment
-
-var moment = require('moment')
-  , jalaali = require('jalaali-js')
+import moment form 'moment';
+import jalaali from 'jalaali-js';
 
 /************************************
     Constants
