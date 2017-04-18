@@ -995,6 +995,30 @@ jMoment.fn.subtract = function (val, units) {
   }
   return this
 }
+jMoment.fn.isSame  = function (input, units) {
+  var before;
+  var after;
+  var middle;
+  units = normalizeUnits(units);
+  if (units === 'jyear' || units === 'jmonth') {
+    units = units.replace(/j/g,"");
+    units = normalizeUnits(units || 'millisecond');
+    units = "j" + units;
+    before = this.clone().startOf(units).valueOf();
+    after = this.clone().endOf(units).valueOf();
+    middle = input.clone().valueOf();
+    if ( before <= middle && after >= middle)
+    {
+      return true;
+    }
+    return false;
+  }
+  else
+  {
+    units = units.replace(/j/g,"");
+    return moment.fn.isSame.call(this,input,units);
+  } 
+}
 
 jMoment.fn.startOf = function (units) {
   units = normalizeUnits(units)
@@ -1009,6 +1033,7 @@ jMoment.fn.startOf = function (units) {
     this.milliseconds(0)
     return this
   } else {
+    units = units.replace(/j/g,"");
     return moment.fn.startOf.call(this, units)
   }
 }

@@ -1,5 +1,6 @@
 # moment-jalaali
 
+isSame is added to moment-jalaali every other thing is same as before.
 A Jalaali (Jalali, Persian, Khorshidi, Shamsi) calendar system plugin for moment.js.
 
 [![Build Status](https://travis-ci.org/jalaali/moment-jalaali.png?branch=master)](https://travis-ci.org/jalaali/moment-jalaali)
