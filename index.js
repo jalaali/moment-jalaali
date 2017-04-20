@@ -751,6 +751,31 @@ jMoment.jDaysInMonth = function (year, month) {
 
 jMoment.jIsLeapYear = jalaali.isLeapJalaaliYear
 
+var symbolMap = {
+    '1': '۱',
+    '2': '۲',
+    '3': '۳',
+    '4': '۴',
+    '5': '۵',
+    '6': '۶',
+    '7': '۷',
+    '8': '۸',
+    '9': '۹',
+    '0': '۰'
+}
+, numberMap = {
+    '۱': '1',
+    '۲': '2',
+    '۳': '3',
+    '۴': '4',
+    '۵': '5',
+    '۶': '6',
+    '۷': '7',
+    '۸': '8',
+    '۹': '9',
+    '۰': '0'
+}
+
 jMoment.loadPersian = function () {
   moment.locale('fa', null)
   moment.defineLocale('fa'
@@ -759,8 +784,10 @@ jMoment.loadPersian = function () {
     , weekdays: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_')
     , weekdaysShort: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_')
     , weekdaysMin: 'ی_د_س_چ_پ_آ_ش'.split('_')
+    , weekdaysParseExact : true
     , longDateFormat:
       { LT: 'HH:mm'
+      , LTS : 'HH:mm:ss'
       , L: 'jYYYY/jMM/jDD'
       , LL: 'jD jMMMM jYYYY'
       , LLL: 'jD jMMMM jYYYY LT'
@@ -778,24 +805,39 @@ jMoment.loadPersian = function () {
       { future: 'در %s'
       , past: '%s پیش'
       , s: 'چند ثانیه'
-      , m: '1 دقیقه'
+      , m: '۱ دقیقه'
       , mm: '%d دقیقه'
-      , h: '1 ساعت'
+      , h: '۱ ساعت'
       , hh: '%d ساعت'
-      , d: '1 روز'
+      , d: '۱ روز'
       , dd: '%d روز'
-      , M: '1 ماه'
+      , M: '۱ ماه'
       , MM: '%d ماه'
-      , y: '1 سال'
+      , y: '۱ سال'
       , yy: '%d سال'
       }
     , ordinal: '%dم'
+    , ordinalParse: /\d{1,2}م/
     , week:
       { dow: 6 // Saturday is the first day of the week.
-      , doy: 12 // The week that contains Jan 1st is the first week of the year.
+      , doy: 12 // The week that contains March 21st is the first week of the year.
       }
     , meridiem: function (hour) {
         return hour < 12 ? 'ق.ظ' : 'ب.ظ'
+      }
+    , meridiemParse: /ق.ظ|ب.ظ/,
+      isPM: function (input) {
+          return /ب.ظ/.test(input)
+      }
+    , preparse: function (string) {
+          return string.replace(/[۰-۹]/g, function (match) {
+              return numberMap[match]
+          }).replace(/،/g, ',')
+      }
+    , postformat: function (string) {
+          return string.replace(/\d/g, function (match) {
+              return symbolMap[match]
+          }).replace(/,/g, '،')
       }
     , jMonths: ('فروردین_اردیبهشت_خرداد_تیر_امرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_')
     , jMonthsShort: 'فرو_ارد_خرد_تیر_امر_شهر_مهر_آبا_آذر_دی_بهم_اسف'.split('_')
