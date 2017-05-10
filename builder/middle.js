@@ -1,2 +1,2 @@
 })
-require.register("moment-jalaali", function (exports, module) {
+require.register("moment-jalali", function (exports, module) {
