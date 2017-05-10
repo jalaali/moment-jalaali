@@ -308,7 +308,7 @@ function mod(a, b) {
   return a - ~~(a / b) * b
 }
 })
-require.register("moment-jalaali", function (exports, module) {
+require.register("moment-jalali", function (exports, module) {
 
 module.exports = jMoment
 
@@ -1067,8 +1067,8 @@ jMoment.loadPersian = function () {
   moment.defineLocale('fa'
   , { months: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
     , monthsShort: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
-    , weekdays: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_')
-    , weekdaysShort: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_')
+    , weekdays: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+    , weekdaysShort: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
     , weekdaysMin: 'ی_د_س_چ_پ_آ_ش'.split('_')
     , longDateFormat:
       { LT: 'HH:mm'
@@ -1108,7 +1108,7 @@ jMoment.loadPersian = function () {
     , meridiem: function (hour) {
         return hour < 12 ? 'ق.ظ' : 'ب.ظ'
       }
-    , jMonths: ('فروردین_اردیبهشت_خرداد_تیر_امرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_')
+    , jMonths: ('فروردین_اردیبهشت_خرداد_تیر_مرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_')
     , jMonthsShort: 'فرو_ارد_خرد_تیر_امر_شهر_مهر_آبا_آذر_دی_بهم_اسف'.split('_')
     }
   )
@@ -1148,10 +1148,10 @@ function mod(a, b) {
 });
 
 if (typeof exports == "object") {
-  module.exports = require("moment-jalaali");
+  module.exports = require("moment-jalali");
 } else if (typeof define == "function" && define.amd) {
-  define([], function(){ return require("moment-jalaali"); });
+  define([], function(){ return require("moment-jalali"); });
 } else {
-  this["moment"] = require("moment-jalaali");
+  this["moment"] = require("moment-jalali");
 }
 })();
