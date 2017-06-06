@@ -89,6 +89,9 @@ To add Persian language, use loadPersian method:
 ```js
 moment.loadPersian()
 ```
+| Param            | Type    | Default | Description                               | Example                                      |
+| ---------------- | ------- | ------- | ----------------------------------------  | -------------------------------------------- |
+| usePersianDigits | Boolean | false   | Use persian digits (Use at your own risk) | moment.loadPersian({usePersianDigits: true}) |
 
 ## Related Projects
 
