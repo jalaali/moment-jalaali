@@ -816,6 +816,21 @@ describe('moment', function() {
     })
   })
 
+  describe('.loadPersian({usePersianDigits: true})', function() {
+    it('should load Persian lang with usePersianDigits = true', function() {
+      var ol = moment.locale()
+        , m
+      moment.loadPersian({usePersianDigits: true})
+      m = moment('1981-08-17')
+      m.format('D MMMM YYYY').should.be.equal('۱۷ اوت ۱۹۸۱')
+      m.format('jD jMMMM jYYYY').should.be.equal('۲۶ امرداد ۱۳۶۰')
+      m.calendar().should.be.equal('۱۳۶۰/۰۵/۲۶')
+      m.format('LLLL').should.be.equal('دوشنبه، ۲۶ امرداد ۱۳۶۰ ۰۰:۰۰')
+      m.format('llll').should.be.equal('دوشنبه، ۲۶ امر ۱۳۶۰ ۰۰:۰۰')
+      moment.locale(ol)
+    })
+  })
+
   describe('.unix', function () {
     it('should create a moment with unix epoch', function () {
       var unix = moment('1360/5/26', 'jYYYY/jM/jD').unix()

@@ -20,6 +20,31 @@ var formattingTokens = /(\[[^\[]*\])|(\\)?j(Mo|MM?M?M?|Do|DDDo|DD?D?D?|w[o|w]?|Y
   , parseTokenTimezone = /Z|[\+\-]\d\d:?\d\d/i
   , parseTokenT = /T/i
   , parseTokenTimestampMs = /[\+\-]?\d+(\.\d{1,3})?/
+  , symbolMap = {
+    '1': '۱',
+    '2': '۲',
+    '3': '۳',
+    '4': '۴',
+    '5': '۵',
+    '6': '۶',
+    '7': '۷',
+    '8': '۸',
+    '9': '۹',
+    '0': '۰'
+  }
+  , numberMap = {
+    '۱': '1',
+    '۲': '2',
+    '۳': '3',
+    '۴': '4',
+    '۵': '5',
+    '۶': '6',
+    '۷': '7',
+    '۸': '8',
+    '۹': '9',
+    '۰': '0'
+  }
+
 
   , unitAliases =
     { jm: 'jmonth'
@@ -751,7 +776,8 @@ jMoment.jDaysInMonth = function (year, month) {
 
 jMoment.jIsLeapYear = jalaali.isLeapJalaaliYear
 
-jMoment.loadPersian = function () {
+jMoment.loadPersian = function (args) {
+  var usePersianDigits =  args !== undefined && args.hasOwnProperty('usePersianDigits') ? args.usePersianDigits : false
   moment.locale('fa', null)
   moment.defineLocale('fa'
   , { months: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
@@ -789,6 +815,22 @@ jMoment.loadPersian = function () {
       , y: '1 سال'
       , yy: '%d سال'
       }
+    , preparse: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/[۰-۹]/g, function (match) {
+            return numberMap[match]
+          }).replace(/،/g, ',')
+        }
+        return string
+    }
+    , postformat: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/\d/g, function (match) {
+            return symbolMap[match]
+          }).replace(/,/g, '،')
+        }
+        return string
+    }
     , ordinal: '%dم'
     , week:
       { dow: 6 // Saturday is the first day of the week.
