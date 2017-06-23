@@ -28,10 +28,10 @@ moment().format('jYYYY/jM/jD')
 
 ### Browser
 
-It is recommended to use [`component`](https://github.com/component/component). Otherwise, you may use the `build/moment-jalaali.js` file.
+You may use the `node_modules/build/moment-jalaali.js` file.
 
-    <script src="moment.js"></script>
-    <script src="moment-jalaali.js"></script>
+    <script src="node_modules/moment/moment.min.js"></script>
+    <script src="node_modules/moment-jalaali/build/moment-jalaali.js"></script>
     <script>
       moment().format('jYYYY/jM/jD')
     </script>
@@ -87,11 +87,14 @@ moment('1981 5 17', 'YYYY jM D').format('YYYY/MM/DD') // 1981/07/17
 To add Persian language, use loadPersian method:
 
 ```js
-moment.loadPersian()
+moment.loadPersian([options])
 ```
+
+### Options
+
 | Param            | Type    | Default | Description                               | Example                                      |
 | ---------------- | ------- | ------- | ----------------------------------------  | -------------------------------------------- |
-| usePersianDigits | Boolean | false   | Use persian digits (Use at your own risk) | moment.loadPersian({usePersianDigits: true}) |
+| usePersianDigits | Boolean | `false`   | Use persian digits (Use at your own risk) | `moment.loadPersian({usePersianDigits: true})` |
 
 ## Related Projects
 
