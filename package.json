@@ -20,7 +20,11 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "mocha --reporter spec --ui bdd --colors --check-leaks test.js",
+    "lint": "eslint index.js && eslint --env mocha --rule 'no-unused-expressions: 0' test.js",
+    "build": "node umd-build.js",
+    "prepublishOnly": "npm run build",
+    "clean": "rimraf build"
   },
   "homepage": "https://github.com/behrang/moment-jalaali",
   "bugs": {
@@ -31,14 +35,13 @@
     "url": "git://github.com/behrang/moment-jalaali.git"
   },
   "devDependencies": {
-    "bower": "^1.4.1",
-    "chai": "^2.2.0",
-    "component": "^1.1.0",
-    "eslint": "^0.18.0",
-    "mocha": "^2.2.1"
+    "chai": "^4.0.2",
+    "eslint": "^4.0.0",
+    "mocha": "^3.4.2"
   },
   "dependencies": {
-    "jalaali-js": "^0.2.0",
-    "moment": "^2.12.0"
+    "jalaali-js": "^1.0.0",
+    "moment": "^2.18.1",
+    "rimraf": "^2.6.1"
   }
 }
