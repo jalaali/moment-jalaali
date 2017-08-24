@@ -92,9 +92,14 @@ moment.loadPersian([options])
 
 ### Options
 
-| Param            | Type    | Default | Description                               | Example                                      |
-| ---------------- | ------- | ------- | ----------------------------------------  | -------------------------------------------- |
+| Param            | Type    | Default   | Description                               | Example                                      |
+| ---------------- | ------- | -------   | ----------------------------------------  | -------------------------------------------- |
 | usePersianDigits | Boolean | `false`   | Use persian digits (Use at your own risk) | `moment.loadPersian({usePersianDigits: true})` |
+| dialect *        | String  | `persian` | Available values = `persian`, `persian-modern` | `moment.loadPersian({dialect: 'persian-modern'})` |
+
+*use dialect option to change `usePersian` dialect, available options are:
+* persian: default dialect(امرداد، آدینه، ...)
+* persian-modern: modern dialect(مرداد، جمعه، ...)
 
 ## Related Projects
 
