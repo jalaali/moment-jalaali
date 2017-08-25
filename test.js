@@ -831,6 +831,22 @@ describe('moment', function() {
     })
   })
 
+  describe('.loadPersian({dialect: persian-modern})', function() {
+    it('should load Persian lang with dialect = persian-modern', function() {
+      var ol = moment.locale()
+        , m
+      moment.loadPersian({dialect: 'persian-modern'})
+      m = moment('1981-08-21')
+      m.format('D MMMM YYYY').should.be.equal('21 اوت 1981')
+      m.format('jD jMMMM jYYYY').should.be.equal('30 مرداد 1360')
+      m.calendar().should.be.equal('1360/05/30')
+      m.format('LLLL').should.be.equal('جمعه، 30 مرداد 1360 00:00')
+      m.format('llll').should.be.equal('جمعه، 30 مرد 1360 00:00')
+      m.format('dd lll').should.be.equal('ج 30 مرد 1360 00:00')
+      moment.locale(ol)
+    })
+  })
+
   describe('.unix', function () {
     it('should create a moment with unix epoch', function () {
       var unix = moment('1360/5/26', 'jYYYY/jM/jD').unix()

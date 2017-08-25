@@ -778,13 +778,26 @@ jMoment.jIsLeapYear = jalaali.isLeapJalaaliYear
 
 jMoment.loadPersian = function (args) {
   var usePersianDigits =  args !== undefined && args.hasOwnProperty('usePersianDigits') ? args.usePersianDigits : false
+  var dialect =  args !== undefined && args.hasOwnProperty('dialect') ? args.dialect : 'persian'
   moment.locale('fa', null)
   moment.defineLocale('fa'
   , { months: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
     , monthsShort: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
-    , weekdays: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_')
-    , weekdaysShort: ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_')
-    , weekdaysMin: 'ی_د_س_چ_پ_آ_ش'.split('_')
+    , weekdays:
+      {
+        'persian': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'persian-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysShort:
+      {
+        'persian': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'persian-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysMin:
+      {
+        'persian': 'ی_د_س_چ_پ_آ_ش'.split('_'),
+        'persian-modern': 'ی_د_س_چ_پ_ج_ش'.split('_')
+      }[dialect]
     , longDateFormat:
       { LT: 'HH:mm'
       , L: 'jYYYY/jMM/jDD'
@@ -839,8 +852,16 @@ jMoment.loadPersian = function (args) {
     , meridiem: function (hour) {
         return hour < 12 ? 'ق.ظ' : 'ب.ظ'
       }
-    , jMonths: ('فروردین_اردیبهشت_خرداد_تیر_امرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_')
-    , jMonthsShort: 'فرو_ارد_خرد_تیر_امر_شهر_مهر_آبا_آذر_دی_بهم_اسف'.split('_')
+    , jMonths:
+      {
+        'persian': ('فروردین_اردیبهشت_خرداد_تیر_امرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_'),
+        'persian-modern': ('فروردین_اردیبهشت_خرداد_تیر_مرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_')
+      }[dialect]
+    , jMonthsShort:
+      {
+        'persian': 'فرو_ارد_خرد_تیر_امر_شهر_مهر_آبا_آذر_دی_بهم_اسف'.split('_'),
+        'persian-modern': 'فرو_ارد_خرد_تیر_مرد_شهر_مهر_آبا_آذر_دی_بهم_اسف'.split('_')
+      }[dialect]
     }
   )
 }
