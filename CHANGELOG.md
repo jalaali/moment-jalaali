@@ -1,3 +1,7 @@
+## 0.7.2
+
+* Fix when formatting using LTS local formatting token (#106)
+
 ## 0.7.1
 
 * Support modern persian via dialect option, see [here](https://github.com/jalaali/moment-jalaali/issues/101)
