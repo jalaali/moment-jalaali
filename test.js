@@ -11,6 +11,7 @@ moment.updateLocale('en'
     }
   , longDateFormat:
     { LT: 'h:mm A'
+    , LTS: 'h:mm:ss A'
     , L: 'jYYYY/jMM/jDD'
     , LL: 'jD jMMMM jYYYY'
     , LLL: 'jD jMMMM jYYYY LT'
@@ -254,6 +255,7 @@ describe('moment', function() {
     it('should work with long date formats too', function() {
       var m = moment('1981-08-17')
       m.format('LT').should.be.equal('12:00 AM')
+      m.format('LTS').should.be.equal('12:00:00 AM')
       m.format('L').should.be.equal('1360/05/26')
       m.format('l').should.be.equal('1360/5/26')
       m.format('LL').should.be.equal('26 Amordaad 1360')
@@ -262,6 +264,20 @@ describe('moment', function() {
       m.format('lll').should.be.equal('26 Amo 1360 12:00 AM')
       m.format('LLLL').should.be.equal('Monday, 26 Amordaad 1360 12:00 AM')
       m.format('llll').should.be.equal('Mon, 26 Amo 1360 12:00 AM')
+    })
+   
+    it('should work with long date formats too if we have time', function() {
+      var m = moment('1981-08-17 12:15:45')
+      m.format('LT').should.be.equal('12:15 PM')
+      m.format('LTS').should.be.equal('12:15:45 PM')
+      m.format('L').should.be.equal('1360/05/26')
+      m.format('l').should.be.equal('1360/5/26')
+      m.format('LL').should.be.equal('26 Amordaad 1360')
+      m.format('ll').should.be.equal('26 Amo 1360')
+      m.format('LLL').should.be.equal('26 Amordaad 1360 12:15 PM')
+      m.format('lll').should.be.equal('26 Amo 1360 12:15 PM')
+      m.format('LLLL').should.be.equal('Monday, 26 Amordaad 1360 12:15 PM')
+      m.format('llll').should.be.equal('Mon, 26 Amo 1360 12:15 PM')
     })
   })
 
