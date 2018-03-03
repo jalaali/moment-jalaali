@@ -119,6 +119,10 @@ A library based on `moment-jalaali` for calculating holidays in Persian calendar
 
 Another calendar system plugin for `momentjs` is [moment-hijri](https://github.com/xsoh/moment-hijri) created by [@xsoh](https://github.com/xsoh).
 
+### vue-persian-datetime-picker
+
+[vue-persian-datetime-picker](https://github.com/talkhabi/vue-persian-datetime-picker) is a `vuejs` plugin to select jalali date and time, created by [@talkhabi](https://github.com/talkhabi).
+
 ## License
 
 MIT
