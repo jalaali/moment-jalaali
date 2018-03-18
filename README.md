@@ -123,6 +123,10 @@ Another calendar system plugin for `momentjs` is [moment-hijri](https://github.c
 
 [vue-persian-datetime-picker](https://github.com/talkhabi/vue-persian-datetime-picker) is a `vuejs` plugin to select jalali date and time, created by [@talkhabi](https://github.com/talkhabi).
 
+### react-native-general-calendars
+
+[react-native-general-calendars](https://github.com/rghorbani/react-native-general-calendars) is a `react-native` component with support of gregorian, jalaali and hijri calendar to selectand work with date and time, created by [@rghorbani](https://github.com/rghorbani).
+
 ## License
 
 MIT
