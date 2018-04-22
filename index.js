@@ -3,6 +3,7 @@ module.exports = jMoment
 
 var moment = require('moment')
   , jalaali = require('jalaali-js')
+require('moment/locale/fa')
 
 /************************************
     Constants
