@@ -779,8 +779,8 @@ jMoment.jIsLeapYear = jalaali.isLeapJalaaliYear
 jMoment.loadPersian = function (args) {
   var usePersianDigits =  args !== undefined && args.hasOwnProperty('usePersianDigits') ? args.usePersianDigits : false
   var dialect =  args !== undefined && args.hasOwnProperty('dialect') ? args.dialect : 'persian'
-  moment.locale('fa', null)
-  moment.defineLocale('fa'
+  moment.locale('fa')
+  moment.updateLocale('fa'
   , { months: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
     , monthsShort: ('ژانویه_فوریه_مارس_آوریل_مه_ژوئن_ژوئیه_اوت_سپتامبر_اکتبر_نوامبر_دسامبر').split('_')
     , weekdays:
