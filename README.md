@@ -45,7 +45,7 @@ m = moment('1360/5/26', 'jYYYY/jM/jD') // Parse a Jalaali date
 m.format('jYYYY/jM/jD [is] YYYY/M/D') // 1360/5/26 is 1981/8/17
 
 m.jYear() // 1360
-m.jMonth() // 4
+m.jMonth() // 5
 m.jDate() // 26
 m.jDayOfYear() // 150
 m.jWeek() // 22
