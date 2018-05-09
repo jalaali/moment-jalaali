@@ -1,3 +1,7 @@
+## 0.7.3
+
+* Fix locale fa loading based on moment documentation (#134)
+
 ## 0.7.2
 
 * Fix when formatting using LTS local formatting token (#106)
