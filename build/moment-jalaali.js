@@ -79,6 +79,11 @@ module.exports =
   Converts a Gregorian date to Jalaali.
 */
 function toJalaali(gy, gm, gd) {
+  if (Object.prototype.toString.call(gy) === '[object Date]') {
+    gd = gy.getDate()
+    gm = gy.getMonth() + 1
+    gy = gy.getFullYear()
+  }
   return d2j(g2d(gy, gm, gd))
 }
 
@@ -935,7 +940,7 @@ jMoment.fn.jMonth = function (input) {
     , g
   if (input != null) {
     if (typeof input === 'string') {
-      input = this.lang().jMonthsParse(input)
+      input = this.localeData().jMonthsParse(input)
       if (typeof input !== 'number')
         return this
     }

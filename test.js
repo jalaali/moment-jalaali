@@ -572,8 +572,8 @@ describe('moment', function() {
     })
 
     it('should return start of Jalaali year, month and date', function() {
-      var m = moment('1980-05-15 07:10:20')
-      m.startOf('jYear').format('jYYYY-jMM-jDD HH:mm:ss').should.be.equal('1359-01-01 01:00:00')
+      var m = moment('1985-05-15 07:10:20')
+      m.startOf('jYear').format('jYYYY-jMM-jDD HH:mm:ss').should.be.equal('1364-01-01 00:00:00')
       m = moment('1980-05-15 07:10:20')
       m.startOf('jMonth').format('jYYYY-jMM-jDD HH:mm:ss').should.be.equal('1359-02-01 00:00:00')
       m = moment('1980-05-15 07:10:20')
@@ -596,8 +596,8 @@ describe('moment', function() {
     })
 
     it('should return end of Jalaali year, month and date', function() {
-      var m = moment('1980-05-15 07:10:20')
-      m.endOf('jYear').format('jYYYY-jMM-jDD HH:mm:ss').should.be.equal('1360-01-01 00:59:59')
+      var m = moment('1985-05-15 07:10:20')
+      m.endOf('jYear').format('jYYYY-jMM-jDD HH:mm:ss').should.be.equal('1364-12-29 23:59:59')
       m = moment('1980-05-15 07:10:20')
       m.endOf('jMonth').format('jYYYY-jMM-jDD HH:mm:ss').should.be.equal('1359-02-31 23:59:59')
       m = moment('1980-05-15 07:10:20')
