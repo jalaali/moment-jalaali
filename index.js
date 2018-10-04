@@ -624,7 +624,7 @@ jMoment.fn.jMonth = function (input) {
     , g
   if (input != null) {
     if (typeof input === 'string') {
-      input = this.lang().jMonthsParse(input)
+      input = this.localeData().jMonthsParse(input)
       if (typeof input !== 'number')
         return this
     }
