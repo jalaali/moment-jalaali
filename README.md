@@ -100,6 +100,11 @@ moment.loadPersian([options])
 *use dialect option to change `usePersian` dialect, available options are:
 * persian: default dialect(امرداد، آدینه، ...)
 * persian-modern: modern dialect(مرداد، جمعه، ...)
+#### in case getting error `'humanize' of undefined` 
+you should also requre locale fa
+```
+require('moment/locale/fa')
+```
 
 ## Related Projects
 
