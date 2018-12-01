@@ -551,7 +551,7 @@ function makeMoment(input, format, lang, strict, utc) {
   m._jDiff = config._jDiff || 0
   jm = objectCreate(jMoment.fn)
   extend(jm, m)
-  if (strict && jm.isValid()) {
+  if (strict && format && jm.isValid()) {
     jm._isValid = jm.format(origFormat) === origInput
   }
   return jm
