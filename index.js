@@ -510,7 +510,6 @@ function jWeekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
 
 function makeMoment(input, format, lang, strict, utc) {
   if (typeof lang === 'boolean') {
-    utc = strict
     strict = lang
     lang = undefined
   }
