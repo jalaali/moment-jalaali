@@ -30,7 +30,7 @@ moment().format('jYYYY/jM/jD')
 
 You may use the `node_modules/build/moment-jalaali.js` file.
 
-    <script src="node_modules/moment/moment.min.js"></script>
+    <script src="node_modules/moment/min/moment.min.js"></script>
     <script src="node_modules/moment-jalaali/build/moment-jalaali.js"></script>
     <script>
       moment().format('jYYYY/jM/jD')
