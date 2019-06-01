@@ -116,6 +116,10 @@ moment.loadPersian();
 
 ## Related Projects
 
+### react-datepicker2
+A simple and reusable Datepicker component for React (with persian jalali calendar support) [Demo](https://mberneti.github.io/react-datepicker2/). 
+created by [@mberneti](https://github.com/mberneti).
+
 ### react-advance-jalaali-datepicker
 
 A React module, which provides different jalaali (persian) datepicker types such as, range date and time picker, developed base on `moment-jalaali`. [react-advance-jalaali-datepicker](https://github.com/A-Kasaaian/react-advance-jalaali-datepicker) created by [@A-Kasaaian](https://github.com/A-Kasaaian).
