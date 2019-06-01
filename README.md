@@ -20,7 +20,6 @@ Like `momentjs`, `moment-jalaali` works in browser and in Node.js.
 npm install moment-jalaali
 ```
 
-
 ```js
 var moment = require('moment-jalaali')
 moment().format('jYYYY/jM/jD')
@@ -30,11 +29,13 @@ moment().format('jYYYY/jM/jD')
 
 You may use the `node_modules/build/moment-jalaali.js` file.
 
-    <script src="node_modules/moment/min/moment.min.js"></script>
-    <script src="node_modules/moment-jalaali/build/moment-jalaali.js"></script>
-    <script>
-      moment().format('jYYYY/jM/jD')
-    </script>
+```html
+<script src="node_modules/moment/min/moment.min.js"></script>
+<script src="node_modules/moment-jalaali/build/moment-jalaali.js"></script>
+<script>
+  moment().format('jYYYY/jM/jD')
+</script>
+```
 
 ## API
 
@@ -98,8 +99,20 @@ moment.loadPersian([options])
 | dialect *        | String  | `persian` | Available values = `persian`, `persian-modern` | `moment.loadPersian({dialect: 'persian-modern'})` |
 
 *use dialect option to change `usePersian` dialect, available options are:
+
 * persian: default dialect(امرداد، آدینه، ...)
 * persian-modern: modern dialect(مرداد، جمعه، ...)
+
+### React Native
+
+To use `fromNow()` in React Native projects:
+
+```js
+import moment from "moment-jalaali";
+import fa from "moment/src/locale/fa";
+moment.locale("fa", fa);
+moment.loadPersian();
+```
 
 ## Related Projects
 
@@ -128,6 +141,7 @@ Another calendar system plugin for `momentjs` is [moment-hijri](https://github.c
 [react-native-general-calendars](https://github.com/rghorbani/react-native-general-calendars) is a `react-native` component with support of gregorian, jalaali and hijri calendar to selectand work with date and time, created by [@rghorbani](https://github.com/rghorbani).
 
 ### imrc-datetime-picker
+
 [imrc-datetime-picker](https://github.com/smrsan76/imrc-datetime-picker) is a `react` component with support of gregorian and jalaali calendar in both english and persian (modern) languages to select and work with date and time, created by [@smrsan76](https://github.com/smrsan76).
 
 ## License
