@@ -123,7 +123,51 @@ describe('moment', function() {
       m = moment('60 5 31', ['jYY jM jD', 'YY M D'])
       m.format('jYY-jMM-jDD').should.be.equal('60-05-31')
     })
-  })
+
+
+    it('should return valid moment instance if years is less than 3178', function () {
+      var m = moment('3177-01-01', 'jYYYY-jMM-jDD')
+      m.format('jYYYY-jMM-jDD').should.be.equal('3177-01-01')
+    })
+
+      it('should return invalid moment instance if years is larger than 3177 (Jalali)', function () {
+      var m = moment('3178-01-01', 'jYYYY-jMM-jDD')
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
+    })
+
+    it('should return invalid moment instance if years is larger than 3177 (Gregorian)', function () {
+      var m = moment('9999-01-01','YYYY-MM-DD')
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
+    })
+
+
+    it('should return invalid moment instance if years is larger than 3177 (timestamp)', function () {
+      var m = moment(64060576200000)
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
+    })
+
+    it('should return invalid moment instance if years is larger than 3177 (timestamp)', function () {
+      var m = moment(new Date(64060576200000))
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
+    })
+
+})
 
   describe('#format', function() {
     it('should work normally when there is no Jalaali token', function() {
@@ -299,6 +343,16 @@ describe('moment', function() {
 
     it('should also has jYears alias', function() {
       moment.fn.jYear.should.be.equal(moment.fn.jYears)
+    })
+
+    it('should return invalid moment instance if years is larger than 31778', function () {
+      var m = moment('3177-01-01', 'jYYYY-jMM-jDD')
+      m.jYear(3178)
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
     })
   })
 
@@ -710,6 +764,46 @@ describe('moment', function() {
       moment(m).add(2, 'jyear').format(jf).should.be.equal('1393/12/29')
       moment(m).add(3, 'jyear').format(jf).should.be.equal('1394/12/29')
       moment(m).add(4, 'jyear').format(jf).should.be.equal('1395/12/30')
+    })
+
+    it('should return invalid moment instance if years is larger than 3177 (add year)', function () {
+      var m = moment('3177-01-01', 'jYYYY-jMM-jDD')
+      m.add(1, 'jyear')
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
+    })
+
+    it('should return invalid moment instance if years is larger than 3177 (add month)', function () {
+      var m = moment('3177-01-01', 'jYYYY-jMM-jDD')
+      m.add(12, 'jmonth')
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
+    })
+
+    it('should return invalid moment instance if years is larger than 3177 (add day)', function () {
+      var m = moment('3177-01-01', 'jYYYY-jMM-jDD')
+      m.add(365, 'day')
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
+    })
+
+    it('should return invalid moment instance if years is larger than 3177 (add seconds)', function () {
+      var m = moment('3177-01-01', 'jYYYY-jMM-jDD')
+      m.add(365 * 3600 * 24, 'seconds') // 365 days
+
+      m.isValid().should.be.false
+      m.jYear().should.be.NaN
+      m.jMonth().should.be.NaN
+      m.jDate().should.be.NaN
     })
   })
 
