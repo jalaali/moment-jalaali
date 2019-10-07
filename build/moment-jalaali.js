@@ -481,6 +481,9 @@ function normalizeUnits(units) {
 
 function setDate(m, year, month, date) {
   var d = m._d
+  if (isNaN(year)) {
+    m._isValid = false
+  }
   if (m._isUTC) {
     /*eslint-disable new-cap*/
     m._d = new Date(Date.UTC(year, month, date,
@@ -708,6 +711,8 @@ function dateFromArray(config) {
     config._isValid = false
   g = toGregorian(jy, jm, jd)
   j = toJalaali(g.gy, g.gm, g.gd)
+  if (isNaN(g.gy))
+    config._isValid = false
   config._jDiff = 0
   if (~~j.jy !== jy)
     config._jDiff += 1
@@ -823,6 +828,7 @@ function jWeekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
 /************************************
     Top Level Functions
 ************************************/
+var maxTimestamp = 57724432199999
 
 function makeMoment(input, format, lang, strict, utc) {
   if (typeof lang === 'boolean') {
@@ -869,6 +875,9 @@ function makeMoment(input, format, lang, strict, utc) {
   extend(jm, m)
   if (strict && format && jm.isValid()) {
     jm._isValid = jm.format(origFormat) === origInput
+  }
+  if (m._d.getTime() > maxTimestamp) {
+    jm._isValid = false
   }
   return jm
 }
@@ -1003,6 +1012,9 @@ jMoment.fn.add = function (val, units) {
     this.jMonth(this.jMonth() + val)
   } else {
     moment.fn.add.call(this, val, units)
+    if (isNaN(this.jYear())) {
+      this._isValid = false
+    }
   }
   return this
 }
@@ -1190,15 +1202,31 @@ jMoment.jConvert =  { toJalaali: toJalaali
 ************************************/
 
 function toJalaali(gy, gm, gd) {
-  var j = jalaali.toJalaali(gy, gm + 1, gd)
-  j.jm -= 1
-  return j
+  try {
+    var j = jalaali.toJalaali(gy, gm + 1, gd)
+    j.jm -= 1
+    return j
+  } catch (e) {
+    return {
+      jy: NaN
+      , jm: NaN
+      , jd: NaN
+    }
+  }
 }
 
 function toGregorian(jy, jm, jd) {
-  var g = jalaali.toGregorian(jy, jm + 1, jd)
-  g.gm -= 1
-  return g
+  try {
+    var g = jalaali.toGregorian(jy, jm + 1, jd)
+    g.gm -= 1
+    return g
+  } catch (e) {
+    return {
+      gy: NaN
+      , gm: NaN
+      , gd: NaN
+    }
+  }
 }
 
 /*
