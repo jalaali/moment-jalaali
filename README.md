@@ -124,6 +124,10 @@ created by [@mberneti](https://github.com/mberneti).
 
 A React module, which provides different jalaali (persian) datepicker types such as, range date and time picker, developed base on `moment-jalaali`. [react-advance-jalaali-datepicker](https://github.com/A-Kasaaian/react-advance-jalaali-datepicker) created by [@A-Kasaaian](https://github.com/A-Kasaaian).
 
+### ng-persian-datepicker
+
+[ng-persian-datepicker](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker) is an angular 8+ date-time picker component for shamsi calendar system with some useful customization settings.
+
 ### ng-jalali-flat-datepicker
 
 A lightweight angular.js date picker using `moment-jalaali` is [thg303/ng-jalali-flat-datepicker](https://github.com/thg303/ng-jalali-flat-datepicker) created by [@thg303](https://github.com/thg303).
