@@ -2,6 +2,7 @@
 
 A Jalaali (Jalali, Persian, Khorshidi, Shamsi) calendar system plugin for moment.js.
 
+[![NPM](https://img.shields.io/npm/v/moment-jalaali.svg)](https://www.npmjs.com/package/moment-jalaali)
 [![Build Status](https://travis-ci.org/jalaali/moment-jalaali.png?branch=master)](https://travis-ci.org/jalaali/moment-jalaali)
 
 Jalali calendar is a solar calendar that was used in Persia, variants of which today are still in use in Iran as well as Afghanistan. [Read more on Wikipedia](http://en.wikipedia.org/wiki/Jalali_calendar) or see [Calendar Converter](http://www.fourmilab.ch/documents/calendar/).
