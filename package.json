@@ -37,7 +37,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^6.7.1",
-    "mocha": "^5.2.0"
+    "mocha": "^7.1.0"
   },
   "dependencies": {
     "jalaali-js": "^1.1.0",
