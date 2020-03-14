@@ -103,6 +103,11 @@ moment.loadPersian([options])
 
 * persian: default dialect(امرداد، آدینه، ...)
 * persian-modern: modern dialect(مرداد، جمعه، ...)
+#### in case getting error `'humanize' of undefined` 
+you should also requre locale fa
+```
+require('moment/locale/fa')
+```
 
 ### React Native
 
