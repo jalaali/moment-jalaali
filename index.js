@@ -738,12 +738,79 @@ jMoment.fn.startOf = function (units) {
   }
 }
 
+function localStartOfDate(y, m, d) {
+  // the date constructor remaps years 0-99 to 1900-1999
+  if (y < 100 && y >= 0) {
+    // preserve leap years using a full 400 year cycle, then reset
+    return new Date(y + 400, m, d) - MS_PER_400_YEARS
+  } else {
+    return new Date(y, m, d).valueOf()
+  }
+}
+
+function utcStartOfDate(y, m, d) {
+  // Date.UTC remaps years 0-99 to 1900-1999
+  if (y < 100 && y >= 0) {
+    // preserve leap years using a full 400 year cycle, then reset
+    return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS
+  } else {
+    return Date.UTC(y, m, d)
+  }
+}
+
 jMoment.fn.endOf = function (units) {
+  var time
   units = normalizeUnits(units)
   if (units === undefined || units === 'milisecond') {
     return this
   }
-  return this.startOf(units).add(1, (units === 'isoweek' ? 'week' : units)).subtract(1, 'ms')
+
+  var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate
+
+  switch (units) {
+    case 'year':
+      time = startOfDate(this.year() + 1, 0, 1) - 1
+      break
+    case 'jyear':
+      var gregTime = toGregorian(this.jYear() + 1, 0, 1)
+      time = startOfDate(gregTime.gy, gregTime.gm, gregTime.gd) - 1
+      break
+    case 'quarter':
+      time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1
+      break
+    case 'month':
+      time = startOfDate(this.year(), this.month() + 1, 1) - 1
+      break
+    case 'jmonth':
+      var gregTime = toGregorian(this.jYear(), this.jMonth() + 1, 1)
+      time = startOfDate(gregTime.gy, gregTime.gm, gregTime.gd) - 1
+      break
+    case 'week':
+      time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1
+      break
+    case 'isoWeek':
+      time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1
+      break
+    case 'day':
+    case 'date':
+      time = startOfDate(this.year(), this.month(), this.date() + 1) - 1
+      break
+    case 'hour':
+      time = this._d.valueOf()
+      time += MS_PER_HOUR - mod(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1
+      break
+    case 'minute':
+      time = this._d.valueOf()
+      time += MS_PER_MINUTE - mod(time, MS_PER_MINUTE) - 1
+      break
+    case 'second':
+      time = this._d.valueOf()
+      time += MS_PER_SECOND - mod(time, MS_PER_SECOND) - 1
+      break
+  }
+
+  this._d.setTime(time)
+  return this
 }
 
 jMoment.fn.isSame = function (other, units) {
