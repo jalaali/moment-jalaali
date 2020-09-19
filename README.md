@@ -115,7 +115,7 @@ To use `fromNow()` in React Native projects:
 
 ```js
 import moment from "moment-jalaali";
-import fa from "moment/src/locale/fa";
+import fa from "moment/locale/fa";
 moment.locale("fa", fa);
 moment.loadPersian();
 ```
