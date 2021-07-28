@@ -788,7 +788,7 @@ jMoment.jDaysInMonth = function (year, month) {
 jMoment.jIsLeapYear = jalaali.isLeapJalaaliYear
 
 jMoment.loadPersian = function (args) {
-  require('moment/locale/fa)
+  require('moment/locale/fa')
   var usePersianDigits =  args !== undefined && args.hasOwnProperty('usePersianDigits') ? args.usePersianDigits : false
   var dialect =  args !== undefined && args.hasOwnProperty('dialect') ? args.dialect : 'persian'
   //moment.locale('fa')
