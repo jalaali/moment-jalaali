@@ -317,7 +317,7 @@ require.register("moment-jalaali", function (exports, module) {
 
 module.exports = jMoment
 
-var moment = require('moment')
+var moment = require('moment/moment')
   , jalaali = require('jalaali-js')
 
 /************************************
