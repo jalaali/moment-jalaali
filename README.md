@@ -11,6 +11,42 @@ This plugin adds Jalaali calendar support to [momentjs](http://momentjs.com) lib
 
 Calendar conversion is based on the [algorithm provided by Kazimierz M. Borkowski](http://www.astro.uni.torun.pl/~kb/Papers/EMP/PersianC-EMP.htm) and has a very good performance.
 
+## Note (Feb 2022)
+
+If you just need to display date and time in Persian calendar, you may use `Intl` which is ECMAScript Internationalization API with a [very good browser support](https://caniuse.com/mdn-javascript_builtins_intl_datetimeformat_format). For example:
+
+```js
+const d = new Date(2022,2,21)
+
+// Simple format
+console.log(new Intl.DateTimeFormat('fa-IR').format(d));
+// => ۱۴۰۱/۱/۱
+
+// Full long format
+console.log(new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'long'}).format(d));
+// => ۱۴۰۱ فروردین ۱, دوشنبه، ساعت ۰:۰۰:۰۰ (‎+۳:۳۰ گرینویچ)
+
+// Latin numbers
+console.log(new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'long'}).format(d));
+// => 1401 فروردین 1, دوشنبه، ساعت 0:00:00 (‎+3:30 گرینویچ)
+
+// English US locale with Persian calendar
+console.log(new Intl.DateTimeFormat('en-US-u-ca-persian', {dateStyle: 'full', timeStyle: 'long'}).format(d));
+// => Monday, Farvardin 1, 1401 AP at 12:00:00 AM GMT+3:30
+
+// Just year
+console.log(new Intl.DateTimeFormat('en-US-u-ca-persian', {year: 'numeric'}).format(d));
+// => 1401 AP
+
+// Just month
+console.log(new Intl.DateTimeFormat('en-US-u-ca-persian', {month: 'short'}).format(d));
+// Farvardin
+
+// Just day
+console.log(new Intl.DateTimeFormat('en-US-u-ca-persian', {day: 'numeric'}).format(d));
+// => 1
+```
+
 ## Where to use it
 
 Like `momentjs`, `moment-jalaali` works in browser and in Node.js.
