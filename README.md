@@ -138,10 +138,14 @@ moment.loadPersian([options])
 *use dialect option to change `usePersian` dialect, available options are:
 
 * persian: default dialect(امرداد، آدینه، ...)
+
 * persian-modern: modern dialect(مرداد، جمعه، ...)
-#### in case getting error `'humanize' of undefined` 
+
+#### in case getting error `'humanize' of undefined`
+
 you should also require locale fa
-```
+
+```js
 require('moment/locale/fa')
 ```
 
@@ -159,7 +163,8 @@ moment.loadPersian();
 ## Related Projects
 
 ### react-datepicker2
-A simple and reusable Datepicker component for React (with persian jalali calendar support) [Demo](https://mberneti.github.io/react-datepicker2/). 
+
+A simple and reusable Datepicker component for React (with persian jalali calendar support) [Demo](https://mberneti.github.io/react-datepicker2/).
 created by [@mberneti](https://github.com/mberneti).
 
 ### react-advance-jalaali-datepicker
