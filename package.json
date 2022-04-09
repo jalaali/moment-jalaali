@@ -36,13 +36,13 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.7.1",
-    "mocha": "^7.1.0"
+    "eslint": "^8.13.0",
+    "mocha": "^9.2.2"
   },
   "dependencies": {
     "jalaali-js": "^1.1.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
-    "rimraf": "^2.6.2"
+    "rimraf": "^3.0.2"
   }
 }

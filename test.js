@@ -182,7 +182,7 @@ describe('moment', function() {
 
     it('should format with escaped and unescaped tokens', function() {
       var m = moment('1980-05-15')
-      m.format('[My] birt\\h y[ea]r [is] jYYYY or YYYY').should.be.equal('My birth year is 1359 or 1980')
+      m.format('[My] birt\\h \\y[ea]r [is] jYYYY or YYYY').should.be.equal('My birth year is 1359 or 1980')
     })
 
     it('should format with mixed tokens', function() {
