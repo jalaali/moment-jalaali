@@ -135,34 +135,34 @@ function jalaaliMonthLength(jy, jm) {
     @param jy Jalaali calendar year (-61 to 3177)
     @returns number of years since the last leap year (0 to 4)
  */
-function jalCalLeap(jy) {  
-  var bl = breaks.length        
+function jalCalLeap(jy) {
+  var bl = breaks.length
     , jp = breaks[0]
     , jm
     , jump
-    , leap    
+    , leap
     , n
     , i
 
   if (jy < jp || jy >= breaks[bl - 1])
     throw new Error('Invalid Jalaali year ' + jy)
-    
+
   for (i = 1; i < bl; i += 1) {
     jm = breaks[i]
     jump = jm - jp
     if (jy < jm)
-      break    
+      break
     jp = jm
   }
   n = jy - jp
-  
+
   if (jump - n < 6)
     n = n - jump + div(jump + 4, 33) * 33
   leap = mod(mod(n + 1, 33) - 1, 4)
   if (leap === -1) {
     leap = 4
-  }  
- 
+  }
+
   return leap
 }
 
@@ -181,7 +181,7 @@ function jalCalLeap(jy) {
   @see: http://www.astro.uni.torun.pl/~kb/Papers/EMP/PersianC-EMP.htm
   @see: http://www.fourmilab.ch/documents/calendar/
 */
-function jalCal(jy, withoutLeap) {  
+function jalCal(jy, withoutLeap) {
   var bl = breaks.length
     , gy = jy + 621
     , leapJ = -14
@@ -230,7 +230,7 @@ function jalCal(jy, withoutLeap) {
   leap = mod(mod(n + 1, 33) - 1, 4)
   if (leap === -1) {
     leap = 4
-  }  
+  }
 
   return  { leap: leap
           , gy: gy
@@ -371,8 +371,8 @@ function mod(a, b) {
   var gregorianCalenderDate = toGregorian(jy, jm, jd);
 
   return new Date(
-    gregorianCalenderDate.gy, 
-    gregorianCalenderDate.gm - 1, 
+    gregorianCalenderDate.gy,
+    gregorianCalenderDate.gm - 1,
     gregorianCalenderDate.gd
   );
 }})
@@ -1244,7 +1244,7 @@ jMoment.loadPersian = function (args) {
       }
     , jMonths:
       {
-        'persian': ('فروردین_اردیبهشت_خرداد_تیر_امرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_'),
+        'persian': ('فروردین_اردیبهشت_خرداد_تیر_مرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_'),
         'persian-modern': ('فروردین_اردیبهشت_خرداد_تیر_مرداد_شهریور_مهر_آبان_آذر_دی_بهمن_اسفند').split('_')
       }[dialect]
     , jMonthsShort:

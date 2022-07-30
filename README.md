@@ -137,7 +137,7 @@ moment.loadPersian([options])
 
 *use dialect option to change `usePersian` dialect, available options are:
 
-* persian: default dialect(امرداد، آدینه، ...)
+* persian: default dialect(مرداد، آدینه، ...)
 
 * persian-modern: modern dialect(مرداد، جمعه، ...)
 
