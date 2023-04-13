@@ -877,6 +877,192 @@ jMoment.loadPersian = function (args) {
   )
 }
 
+وری_غویی_غبرګولی_چنګاښ_زمری_وږی_تله_لړم_لیندی_مرغومی_سلواغه_کب
+
+جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر
+
+حمل_ثور_جوزا_سرطان_اسد_سنبله_میزان_عقرب_قوس_جدی_دلو_حوت
+
+jMoment.loadPersian_dari = function (args) {
+  var usePersianDigits =  args !== undefined && args.hasOwnProperty('usePersianDigits') ? args.usePersianDigits : false
+  var dialect =  args !== undefined && args.hasOwnProperty('dialect') ? args.dialect : 'persian-dari'
+  moment.locale('fa-af')
+  moment.updateLocale('fa-af'
+  , { months: ('جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر').split('_')
+    , monthsShort: ('جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر').split('_')
+    , weekdays:
+      {
+        'persian': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'persian-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysShort:
+      {
+        'persian': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'persian-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysMin:
+      {
+        'persian': 'ی_د_س_چ_پ_آ_ش'.split('_'),
+        'persian-modern': 'ی_د_س_چ_پ_ج_ش'.split('_')
+      }[dialect]
+    , longDateFormat:
+      { LT: 'HH:mm'
+      , L: 'jYYYY/jMM/jDD'
+      , LL: 'jD jMMMM jYYYY'
+      , LLL: 'jD jMMMM jYYYY LT'
+      , LLLL: 'dddd، jD jMMMM jYYYY LT'
+      }
+    , calendar:
+      { sameDay: '[امروز ساعت] LT'
+      , nextDay: '[فردا ساعت] LT'
+      , nextWeek: 'dddd [ساعت] LT'
+      , lastDay: '[دیروز ساعت] LT'
+      , lastWeek: 'dddd [ی پیش ساعت] LT'
+      , sameElse: 'L'
+      }
+    , relativeTime:
+      { future: 'در %s'
+      , past: '%s پیش'
+      , s: 'چند ثانیه'
+      , m: '1 دقیقه'
+      , mm: '%d دقیقه'
+      , h: '1 ساعت'
+      , hh: '%d ساعت'
+      , d: '1 روز'
+      , dd: '%d روز'
+      , M: '1 ماه'
+      , MM: '%d ماه'
+      , y: '1 سال'
+      , yy: '%d سال'
+      }
+    , preparse: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/[۰-۹]/g, function (match) {
+            return numberMap[match]
+          }).replace(/،/g, ',')
+        }
+        return string
+    }
+    , postformat: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/\d/g, function (match) {
+            return symbolMap[match]
+          }).replace(/,/g, '،')
+        }
+        return string
+    }
+    , ordinal: '%dم'
+    , week:
+      { dow: 6 // Saturday is the first day of the week.
+      , doy: 12 // The week that contains Jan 1st is the first week of the year.
+      }
+    , meridiem: function (hour) {
+        return hour < 12 ? 'ق.ظ' : 'ب.ظ'
+      }
+    , jMonths:
+      {
+        'persian-dari': ('حمل_ثور_جوزا_سرطان_اسد_سنبله_میزان_عقرب_قوس_جدی_دلو_حوت').split('_'),
+        'persian-modern-dari': ('حمل_ثور_جوزا_سرطان_اسد_سنبله_میزان_عقرب_قوس_جدی_دلو_حوت').split('_')
+      }[dialect]
+    , jMonthsShort:
+      {
+        'persian-dari': 'حمل_ثور_جوزا_سرط_اسد_سنب_میز_عقر_قوس_جدی_دلو_حوت'.split('_'),
+        'persian-modern-dari': 'حمل_ثور_جوزا_سرط_اسد_سنب_میز_عقر_قوس_جدی_دلو_حوت'.split('_')
+      }[dialect]
+    }
+  )
+}
+
+jMoment.loadPashto = function (args) {
+  var usePersianDigits =  args !== undefined && args.hasOwnProperty('usePersianDigits') ? args.usePersianDigits : false
+  var dialect =  args !== undefined && args.hasOwnProperty('dialect') ? args.dialect : 'pashto'
+  moment.locale('ps-af')
+  moment.updateLocale('ps-af'
+  , { months: ('جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر').split('_')
+    , monthsShort: ('جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر').split('_')
+    , weekdays:
+      {
+        'pashto': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'pashto-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysShort:
+      {
+        'pashto': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'pashto-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysMin:
+      {
+        'pashto': 'ی_د_س_چ_پ_آ_ش'.split('_'),
+        'pashto-modern': 'ی_د_س_چ_پ_ج_ش'.split('_')
+      }[dialect]
+    , longDateFormat:
+      { LT: 'HH:mm'
+      , L: 'jYYYY/jMM/jDD'
+      , LL: 'jD jMMMM jYYYY'
+      , LLL: 'jD jMMMM jYYYY LT'
+      , LLLL: 'dddd، jD jMMMM jYYYY LT'
+      }
+    , calendar:
+      { sameDay: '[امروز ساعت] LT'
+      , nextDay: '[فردا ساعت] LT'
+      , nextWeek: 'dddd [ساعت] LT'
+      , lastDay: '[دیروز ساعت] LT'
+      , lastWeek: 'dddd [ی پیش ساعت] LT'
+      , sameElse: 'L'
+      }
+    , relativeTime:
+      { future: 'در %s'
+      , past: '%s پیش'
+      , s: 'چند ثانیه'
+      , m: '1 دقیقه'
+      , mm: '%d دقیقه'
+      , h: '1 ساعت'
+      , hh: '%d ساعت'
+      , d: '1 روز'
+      , dd: '%d روز'
+      , M: '1 ماه'
+      , MM: '%d ماه'
+      , y: '1 سال'
+      , yy: '%d سال'
+      }
+    , preparse: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/[۰-۹]/g, function (match) {
+            return numberMap[match]
+          }).replace(/،/g, ',')
+        }
+        return string
+    }
+    , postformat: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/\d/g, function (match) {
+            return symbolMap[match]
+          }).replace(/,/g, '،')
+        }
+        return string
+    }
+    , ordinal: '%dم'
+    , week:
+      { dow: 6 // Saturday is the first day of the week.
+      , doy: 12 // The week that contains Jan 1st is the first week of the year.
+      }
+    , meridiem: function (hour) {
+        return hour < 12 ? 'ق.ظ' : 'ب.ظ'
+      }
+    , jMonths:
+      {
+        'pashto': ('وری_غویی_غبرګولی_چنګاښ_زمری_وږی_تله_لړم_لیندی_مرغومی_سلواغه_کب').split('_'),
+        'pashto-modern': ('وری_غویی_غبرګولی_چنګاښ_زمری_وږی_تله_لړم_لیندی_مرغومی_سلواغه_کب').split('_')
+      }[dialect]
+    , jMonthsShort:
+      {
+        'pashto': 'وری_غوی_غبر_چنګ_زمر_وږی_لړم_لین_مرغ_سلو_کب'.split('_'),
+        'pashto-modern': 'وری_غوی_غبر_چنګ_زمر_وږی_لړم_لین_مرغ_سلو_کب'.split('_')
+      }[dialect]
+    }
+  )
+}
+
 jMoment.jConvert =  { toJalaali: toJalaali
                     , toGregorian: toGregorian
                     }
