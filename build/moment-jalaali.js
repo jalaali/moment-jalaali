@@ -74,6 +74,7 @@ module.exports =
   , g2d: g2d
   , d2g: d2g
   , jalaaliToDateObject: jalaaliToDateObject
+  , jalaaliWeek: jalaaliWeek
   }
 
 /*
@@ -135,34 +136,34 @@ function jalaaliMonthLength(jy, jm) {
     @param jy Jalaali calendar year (-61 to 3177)
     @returns number of years since the last leap year (0 to 4)
  */
-function jalCalLeap(jy) {  
-  var bl = breaks.length        
+function jalCalLeap(jy) {
+  var bl = breaks.length
     , jp = breaks[0]
     , jm
     , jump
-    , leap    
+    , leap
     , n
     , i
 
   if (jy < jp || jy >= breaks[bl - 1])
     throw new Error('Invalid Jalaali year ' + jy)
-    
+
   for (i = 1; i < bl; i += 1) {
     jm = breaks[i]
     jump = jm - jp
     if (jy < jm)
-      break    
+      break
     jp = jm
   }
   n = jy - jp
-  
+
   if (jump - n < 6)
     n = n - jump + div(jump + 4, 33) * 33
   leap = mod(mod(n + 1, 33) - 1, 4)
   if (leap === -1) {
     leap = 4
-  }  
- 
+  }
+
   return leap
 }
 
@@ -181,7 +182,7 @@ function jalCalLeap(jy) {
   @see: http://www.astro.uni.torun.pl/~kb/Papers/EMP/PersianC-EMP.htm
   @see: http://www.fourmilab.ch/documents/calendar/
 */
-function jalCal(jy, withoutLeap) {  
+function jalCal(jy, withoutLeap) {
   var bl = breaks.length
     , gy = jy + 621
     , leapJ = -14
@@ -230,7 +231,7 @@ function jalCal(jy, withoutLeap) {
   leap = mod(mod(n + 1, 33) - 1, 4)
   if (leap === -1) {
     leap = 4
-  }  
+  }
 
   return  { leap: leap
           , gy: gy
@@ -348,6 +349,58 @@ function d2g(jdn) {
           }
 }
 
+/**
+ * Return Saturday and Friday day of current week(week start in Saturday)
+ * @param {number} jy jalaali year
+ * @param {number} jm jalaali month
+ * @param {number} jd jalaali day
+ * @returns Saturday and Friday of current week
+ */
+function jalaaliWeek(jy, jm, jd) {
+  var dayOfWeek = jalaaliToDateObject(jy, jm, jd).getDay();
+
+  var startDayDifference = dayOfWeek == 6 ? 0 : -(dayOfWeek+1);
+  var endDayDifference = 6+startDayDifference;
+
+  return {
+    saturday: d2j(j2d(jy, jm, jd+startDayDifference)),
+    friday: d2j(j2d(jy, jm, jd+endDayDifference))
+  }
+}
+
+/**
+ * Convert Jalaali calendar dates to javascript Date object
+ * @param {number} jy jalaali year
+ * @param {number} jm jalaali month
+ * @param {number} jd jalaali day
+ * @param {number} [h] hours
+ * @param {number} [m] minutes
+ * @param {number} [s] seconds
+ * @param {number} [ms] milliseconds
+ * @returns Date object of the jalaali calendar dates
+ */
+function jalaaliToDateObject(
+  jy,
+  jm,
+  jd,
+  h,
+  m,
+  s,
+  ms
+) {
+  var gregorianCalenderDate = toGregorian(jy, jm, jd);
+
+  return new Date(
+    gregorianCalenderDate.gy,
+    gregorianCalenderDate.gm - 1,
+    gregorianCalenderDate.gd,
+    h || 0,
+    m || 0,
+    s || 0,
+    ms || 0
+  );
+}
+
 /*
   Utility helper functions.
 */
@@ -359,23 +412,7 @@ function div(a, b) {
 function mod(a, b) {
   return a - ~~(a / b) * b
 }
-
-/**
- * Convert Jalaali calendar dates to javascript Date object
- * @param {number} jy jalaali year
- * @param {number} jm jalaali month
- * @param {number} jd jalaali day
- * @returns Date object of the jalaali calendar dates
- */
- function jalaaliToDateObject(jy, jm, jd) {
-  var gregorianCalenderDate = toGregorian(jy, jm, jd);
-
-  return new Date(
-    gregorianCalenderDate.gy, 
-    gregorianCalenderDate.gm - 1, 
-    gregorianCalenderDate.gd
-  );
-}})
+})
 require.register("moment-jalaali", function (exports, module) {
 
 module.exports = jMoment
@@ -1251,6 +1288,187 @@ jMoment.loadPersian = function (args) {
       {
         'persian': 'فرو_ارد_خرد_تیر_امر_شهر_مهر_آبا_آذر_دی_بهم_اسف'.split('_'),
         'persian-modern': 'فرو_ارد_خرد_تیر_مرد_شهر_مهر_آبا_آذر_دی_بهم_اسف'.split('_')
+      }[dialect]
+    }
+  )
+}
+
+
+jMoment.loadPersian_dari = function (args) {
+  var usePersianDigits =  args !== undefined && args.hasOwnProperty('usePersianDigits') ? args.usePersianDigits : false
+  var dialect =  args !== undefined && args.hasOwnProperty('dialect') ? args.dialect : 'persian-dari'
+  moment.locale('fa-af')
+  moment.updateLocale('fa-af'
+  , { months: ('جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر').split('_')
+    , monthsShort: ('جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر').split('_')
+    , weekdays:
+      {
+        'persian': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'persian-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysShort:
+      {
+        'persian': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'persian-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysMin:
+      {
+        'persian': 'ی_د_س_چ_پ_آ_ش'.split('_'),
+        'persian-modern': 'ی_د_س_چ_پ_ج_ش'.split('_')
+      }[dialect]
+    , longDateFormat:
+      { LT: 'HH:mm'
+      , L: 'jYYYY/jMM/jDD'
+      , LL: 'jD jMMMM jYYYY'
+      , LLL: 'jD jMMMM jYYYY LT'
+      , LLLL: 'dddd، jD jMMMM jYYYY LT'
+      }
+    , calendar:
+      { sameDay: '[امروز ساعت] LT'
+      , nextDay: '[فردا ساعت] LT'
+      , nextWeek: 'dddd [ساعت] LT'
+      , lastDay: '[دیروز ساعت] LT'
+      , lastWeek: 'dddd [ی پیش ساعت] LT'
+      , sameElse: 'L'
+      }
+    , relativeTime:
+      { future: 'در %s'
+      , past: '%s پیش'
+      , s: 'چند ثانیه'
+      , m: '1 دقیقه'
+      , mm: '%d دقیقه'
+      , h: '1 ساعت'
+      , hh: '%d ساعت'
+      , d: '1 روز'
+      , dd: '%d روز'
+      , M: '1 ماه'
+      , MM: '%d ماه'
+      , y: '1 سال'
+      , yy: '%d سال'
+      }
+    , preparse: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/[۰-۹]/g, function (match) {
+            return numberMap[match]
+          }).replace(/،/g, ',')
+        }
+        return string
+    }
+    , postformat: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/\d/g, function (match) {
+            return symbolMap[match]
+          }).replace(/,/g, '،')
+        }
+        return string
+    }
+    , ordinal: '%dم'
+    , week:
+      { dow: 6 // Saturday is the first day of the week.
+      , doy: 12 // The week that contains Jan 1st is the first week of the year.
+      }
+    , meridiem: function (hour) {
+        return hour < 12 ? 'ق.ظ' : 'ب.ظ'
+      }
+    , jMonths:
+      {
+        'persian-dari': ('حمل_ثور_جوزا_سرطان_اسد_سنبله_میزان_عقرب_قوس_جدی_دلو_حوت').split('_'),
+        'persian-modern-dari': ('حمل_ثور_جوزا_سرطان_اسد_سنبله_میزان_عقرب_قوس_جدی_دلو_حوت').split('_')
+      }[dialect]
+    , jMonthsShort:
+      {
+        'persian-dari': 'حمل_ثور_جوزا_سرط_اسد_سنب_میز_عقر_قوس_جدی_دلو_حوت'.split('_'),
+        'persian-modern-dari': 'حمل_ثور_جوزا_سرط_اسد_سنب_میز_عقر_قوس_جدی_دلو_حوت'.split('_')
+      }[dialect]
+    }
+  )
+}
+
+jMoment.loadPashto = function (args) {
+  var usePersianDigits =  args !== undefined && args.hasOwnProperty('usePersianDigits') ? args.usePersianDigits : false
+  var dialect =  args !== undefined && args.hasOwnProperty('dialect') ? args.dialect : 'pashto'
+  moment.locale('ps-af')
+  moment.updateLocale('ps-af'
+  , { months: ('جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر').split('_')
+    , monthsShort: ('جنوری_فبروری_مارچ_اپریل_می_جون_جولای_آگست_سپتمبر_اکتوبر_نومبر_دیسمبر').split('_')
+    , weekdays:
+      {
+        'pashto': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'pashto-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysShort:
+      {
+        'pashto': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_آدینه_شنبه').split('_'),
+        'pashto-modern': ('یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه').split('_')
+      }[dialect]
+    , weekdaysMin:
+      {
+        'pashto': 'ی_د_س_چ_پ_آ_ش'.split('_'),
+        'pashto-modern': 'ی_د_س_چ_پ_ج_ش'.split('_')
+      }[dialect]
+    , longDateFormat:
+      { LT: 'HH:mm'
+      , L: 'jYYYY/jMM/jDD'
+      , LL: 'jD jMMMM jYYYY'
+      , LLL: 'jD jMMMM jYYYY LT'
+      , LLLL: 'dddd، jD jMMMM jYYYY LT'
+      }
+    , calendar:
+      { sameDay: '[امروز ساعت] LT'
+      , nextDay: '[فردا ساعت] LT'
+      , nextWeek: 'dddd [ساعت] LT'
+      , lastDay: '[دیروز ساعت] LT'
+      , lastWeek: 'dddd [ی پیش ساعت] LT'
+      , sameElse: 'L'
+      }
+    , relativeTime:
+      { future: 'در %s'
+      , past: '%s پیش'
+      , s: 'چند ثانیه'
+      , m: '1 دقیقه'
+      , mm: '%d دقیقه'
+      , h: '1 ساعت'
+      , hh: '%d ساعت'
+      , d: '1 روز'
+      , dd: '%d روز'
+      , M: '1 ماه'
+      , MM: '%d ماه'
+      , y: '1 سال'
+      , yy: '%d سال'
+      }
+    , preparse: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/[۰-۹]/g, function (match) {
+            return numberMap[match]
+          }).replace(/،/g, ',')
+        }
+        return string
+    }
+    , postformat: function (string) {
+        if (usePersianDigits) {
+          return string.replace(/\d/g, function (match) {
+            return symbolMap[match]
+          }).replace(/,/g, '،')
+        }
+        return string
+    }
+    , ordinal: '%dم'
+    , week:
+      { dow: 6 // Saturday is the first day of the week.
+      , doy: 12 // The week that contains Jan 1st is the first week of the year.
+      }
+    , meridiem: function (hour) {
+        return hour < 12 ? 'ق.ظ' : 'ب.ظ'
+      }
+    , jMonths:
+      {
+        'pashto': ('وری_غویی_غبرګولی_چنګاښ_زمری_وږی_تله_لړم_لیندی_مرغومی_سلواغه_کب').split('_'),
+        'pashto-modern': ('وری_غویی_غبرګولی_چنګاښ_زمری_وږی_تله_لړم_لیندی_مرغومی_سلواغه_کب').split('_')
+      }[dialect]
+    , jMonthsShort:
+      {
+        'pashto': 'وری_غوی_غبر_چنګ_زمر_وږی_لړم_لین_مرغ_سلو_کب'.split('_'),
+        'pashto-modern': 'وری_غوی_غبر_چنګ_زمر_وږی_لړم_لین_مرغ_سلو_کب'.split('_')
       }[dialect]
     }
   )
