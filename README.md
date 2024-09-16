@@ -74,6 +74,14 @@ You may use the `node_modules/build/moment-jalaali.js` file.
 </script>
 ```
 
+## Typescript
+
+If you need type definitions for typescript, you need to install them separately.
+
+```shell
+npm install @types/moment-jalaali
+```
+
 ## API
 
 This plugin tries to mimic `momentjs` api. Basically, when you want to format or parse a string, just add a `j` to the format token like 'jYYYY' or 'jM'. For example:
