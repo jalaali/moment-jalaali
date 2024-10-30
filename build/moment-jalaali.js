@@ -73,16 +73,7 @@ module.exports =
   , d2j: d2j
   , g2d: g2d
   , d2g: d2g
-  , jalaaliToDateObject: jalaaliToDateObject
-  , jalaaliWeek: jalaaliWeek
   }
-
-/*
-  Jalaali years starting the 33-year rule.
-*/
-var breaks =  [ -61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210
-  , 1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
-  ]
 
 /*
   Converts a Gregorian date to Jalaali.
@@ -116,7 +107,7 @@ function isValidJalaaliDate(jy, jm, jd) {
   Is this a leap year or not?
 */
 function isLeapJalaaliYear(jy) {
-  return jalCalLeap(jy) === 0
+  return jalCal(jy).leap === 0
 }
 
 /*
@@ -130,51 +121,12 @@ function jalaaliMonthLength(jy, jm) {
 }
 
 /*
-    This function determines if the Jalaali (Persian) year is
-    leap (366-day long) or is the common year (365 days)
-
-    @param jy Jalaali calendar year (-61 to 3177)
-    @returns number of years since the last leap year (0 to 4)
- */
-function jalCalLeap(jy) {
-  var bl = breaks.length
-    , jp = breaks[0]
-    , jm
-    , jump
-    , leap
-    , n
-    , i
-
-  if (jy < jp || jy >= breaks[bl - 1])
-    throw new Error('Invalid Jalaali year ' + jy)
-
-  for (i = 1; i < bl; i += 1) {
-    jm = breaks[i]
-    jump = jm - jp
-    if (jy < jm)
-      break
-    jp = jm
-  }
-  n = jy - jp
-
-  if (jump - n < 6)
-    n = n - jump + div(jump + 4, 33) * 33
-  leap = mod(mod(n + 1, 33) - 1, 4)
-  if (leap === -1) {
-    leap = 4
-  }
-
-  return leap
-}
-
-/*
   This function determines if the Jalaali (Persian) year is
   leap (366-day long) or is the common year (365 days), and
   finds the day in March (Gregorian calendar) of the first
   day of the Jalaali year (jy).
 
   @param jy Jalaali calendar year (-61 to 3177)
-  @param withoutLeap when don't need leap (true or false) default is false
   @return
     leap: number of years since the last leap year (0 to 4)
     gy: Gregorian year of the beginning of Jalaali year
@@ -182,8 +134,12 @@ function jalCalLeap(jy) {
   @see: http://www.astro.uni.torun.pl/~kb/Papers/EMP/PersianC-EMP.htm
   @see: http://www.fourmilab.ch/documents/calendar/
 */
-function jalCal(jy, withoutLeap) {
-  var bl = breaks.length
+function jalCal(jy) {
+  // Jalaali years starting the 33-year rule.
+  var breaks =  [ -61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210
+                , 1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
+                ]
+    , bl = breaks.length
     , gy = jy + 621
     , leapJ = -14
     , jp = breaks[0]
@@ -221,10 +177,6 @@ function jalCal(jy, withoutLeap) {
   // Determine the Gregorian date of Farvardin the 1st.
   march = 20 + leapJ - leapG
 
-  // return with gy and march when we don't need leap
-  if (withoutLeap) return { gy: gy, march: march };
-
-
   // Find how many years have passed since the last leap year.
   if (jump - n < 6)
     n = n - jump + div(jump + 4, 33) * 33
@@ -248,7 +200,7 @@ function jalCal(jy, withoutLeap) {
   @return Julian Day number
 */
 function j2d(jy, jm, jd) {
-  var r = jalCal(jy, true)
+  var r = jalCal(jy)
   return g2d(r.gy, 3, r.march) + (jm - 1) * 31 - div(jm, 7) * (jm - 7) + jd - 1
 }
 
@@ -264,7 +216,7 @@ function j2d(jy, jm, jd) {
 function d2j(jdn) {
   var gy = d2g(jdn).gy // Calculate Gregorian year (gy).
     , jy = gy - 621
-    , r = jalCal(jy, false)
+    , r = jalCal(jy)
     , jdn1f = g2d(gy, 3, r.march)
     , jd
     , jm
@@ -347,58 +299,6 @@ function d2g(jdn) {
           , gm: gm
           , gd: gd
           }
-}
-
-/**
- * Return Saturday and Friday day of current week(week start in Saturday)
- * @param {number} jy jalaali year
- * @param {number} jm jalaali month
- * @param {number} jd jalaali day
- * @returns Saturday and Friday of current week
- */
-function jalaaliWeek(jy, jm, jd) {
-  var dayOfWeek = jalaaliToDateObject(jy, jm, jd).getDay();
-
-  var startDayDifference = dayOfWeek == 6 ? 0 : -(dayOfWeek+1);
-  var endDayDifference = 6+startDayDifference;
-
-  return {
-    saturday: d2j(j2d(jy, jm, jd+startDayDifference)),
-    friday: d2j(j2d(jy, jm, jd+endDayDifference))
-  }
-}
-
-/**
- * Convert Jalaali calendar dates to javascript Date object
- * @param {number} jy jalaali year
- * @param {number} jm jalaali month
- * @param {number} jd jalaali day
- * @param {number} [h] hours
- * @param {number} [m] minutes
- * @param {number} [s] seconds
- * @param {number} [ms] milliseconds
- * @returns Date object of the jalaali calendar dates
- */
-function jalaaliToDateObject(
-  jy,
-  jm,
-  jd,
-  h,
-  m,
-  s,
-  ms
-) {
-  var gregorianCalenderDate = toGregorian(jy, jm, jd);
-
-  return new Date(
-    gregorianCalenderDate.gy,
-    gregorianCalenderDate.gm - 1,
-    gregorianCalenderDate.gd,
-    h || 0,
-    m || 0,
-    s || 0,
-    ms || 0
-  );
 }
 
 /*
