@@ -16,7 +16,7 @@ Calendar conversion is based on the [algorithm provided by Kazimierz M. Borkowsk
 If you just need to display date and time in Persian calendar, you may use `Intl` which is ECMAScript Internationalization API with a [very good browser support](https://caniuse.com/mdn-javascript_builtins_intl_datetimeformat_format). For example:
 
 ```js
-const d = new Date(2022,2,21)
+const d = new Date(2022,3,21)
 
 // Simple format
 console.log(new Intl.DateTimeFormat('fa-IR').format(d));
