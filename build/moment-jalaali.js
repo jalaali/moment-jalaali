@@ -582,7 +582,7 @@ function normalizeUnits(units) {
 function setDate(m, year, month, date) {
   var d = m._d
   if (isNaN(year)) {
-    m._isValid = false
+    invalidate(m)
   }
   if (m._isUTC) {
     /*eslint-disable new-cap*/
@@ -599,6 +599,29 @@ function objectCreate(parent) {
   function F() {}
   F.prototype = parent
   return new F()
+}
+
+/* Marks a moment instance invalid.
+ *
+ * Until 2.29, moment's isValid() memoized behind `if (m._isValid == null)`,
+ * so assigning `_isValid = false` was enough to make it stick. moment 2.30
+ * dropped that guard: isValid() now recomputes from the parsing flags on
+ * every call and overwrites `_isValid`, silently discarding the assignment.
+ *
+ * So also raise moment's own `userInvalidated` flag, which is what
+ * `moment.invalid()` sets and which every version honours. The `_isValid`
+ * assignment is kept for moment < 2.30, where the flag is consulted only the
+ * first time validity is computed.
+ */
+function invalidate(m) {
+  m._isValid = false
+  // parsingFlags() has the side effect of creating `_pf` when it is absent.
+  // Its return value is useless here — moment hands back a copy.
+  if (typeof m.parsingFlags === 'function')
+    m.parsingFlags()
+  if (m._pf)
+    m._pf.userInvalidated = true
+  return m
 }
 
 function getPrototypeOf(object) {
@@ -969,15 +992,16 @@ function makeMoment(input, format, lang, strict, utc) {
   else
     m = moment(input, format, lang, strict)
   if (config._isValid === false)
-    m._isValid = false
+    invalidate(m)
   m._jDiff = config._jDiff || 0
   jm = objectCreate(jMoment.fn)
   extend(jm, m)
   if (strict && format && jm.isValid()) {
-    jm._isValid = jm.format(origFormat) === origInput
+    if (jm.format(origFormat) !== origInput)
+      invalidate(jm)
   }
   if (m._d.getTime() > maxTimestamp) {
-    jm._isValid = false
+    invalidate(jm)
   }
   return jm
 }
@@ -1113,7 +1137,7 @@ jMoment.fn.add = function (val, units) {
   } else {
     moment.fn.add.call(this, val, units)
     if (isNaN(this.jYear())) {
-      this._isValid = false
+      invalidate(this)
     }
   }
   return this
