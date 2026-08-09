@@ -1,4 +1,4 @@
-## Unreleased
+## 0.10.5
 
 * Fix `isValid()` wrongly returning `true` for dates outside the supported
   range when running against moment >= 2.30. moment 2.30 stopped memoizing
