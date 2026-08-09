@@ -26,13 +26,16 @@
     "prepublishOnly": "npm run build",
     "clean": "rimraf build"
   },
-  "homepage": "https://github.com/behrang/moment-jalaali",
+  "homepage": "https://github.com/jalaali/moment-jalaali",
   "bugs": {
-    "url": "https://github.com/behrang/moment-jalaali/issues"
+    "url": "https://github.com/jalaali/moment-jalaali/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/behrang/moment-jalaali.git"
+    "url": "git+https://github.com/jalaali/moment-jalaali.git"
+  },
+  "publishConfig": {
+    "provenance": true
   },
   "devDependencies": {
     "chai": "^6.2.2",
