@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [20, 22, 24]
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm test
+
+      # The UMD bundle is committed, and it is a plain concatenation of
+      # index.js with the installed jalaali-js. Rebuilding and diffing keeps
+      # the committed copy honest: if someone edits index.js without running
+      # the build, or the bundle is edited directly, this fails.
+      # Linux only: Windows runners check out with CRLF while umd-build.js
+      # writes LF, which would make the diff fail for no real reason.
+      - name: Committed UMD bundle matches a fresh build
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          npm run build
+          git diff --exit-code -- build/moment-jalaali.js
+
+  # `npm run lint` is not yet part of CI: the repo still uses .eslintrc.yml,
+  # which ESLint 9+ replaced with flat config, so linting currently fails on
+  # tooling grounds. Re-add this once eslint.config.js exists.
