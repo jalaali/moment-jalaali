@@ -794,13 +794,13 @@ jMoment.fn.jWeeks = jMoment.fn.jWeek
 jMoment.jDaysInMonth = function (year, month) {
   year += div(month, 12)
   month = mod(month, 12)
-  if (month < 0) {
+  if (month <= 0) {
     month += 12
     year -= 1
   }
-  if (month < 6) {
+  if (month <= 6) {
     return 31
-  } else if (month < 11) {
+  } else if (month <= 11) {
     return 30
   } else if (jMoment.jIsLeapYear(year)) {
     return 30
