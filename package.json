@@ -19,6 +19,7 @@
     "convert"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "mocha --reporter spec --ui bdd --colors --check-leaks test.js",
     "lint": "eslint index.js && eslint --env mocha --rule 'no-unused-expressions: 0' test.js",
