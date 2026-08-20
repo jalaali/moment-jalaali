@@ -659,6 +659,11 @@ describe('moment', function() {
       m = moment('1980-05-15 07:10:20')
       m.endOf('week').format('jYYYY-jMM-jDD HH:mm:ss').should.be.equal('1359-02-26 23:59:59')
     })
+
+    it('should work even when day light saving interferes', function () {
+      var m = moment('2020-03-21 07:10:20')
+      m.endOf('week').format('jYYYY-jMM-jDD HH:mm:ss').should.be.equal('1399-01-08 23:59:59')
+    })
   })
 
   describe('#isValid', function() {
